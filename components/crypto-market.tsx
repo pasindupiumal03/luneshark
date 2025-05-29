@@ -1,37 +1,45 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { X, TrendingUp, TrendingDown, RefreshCw, AlertCircle } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { useState, useEffect } from "react";
+import {
+  X,
+  TrendingUp,
+  TrendingDown,
+  RefreshCw,
+  AlertCircle,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface CryptoData {
-  id: number
-  name: string
-  symbol: string
-  price: number
-  change24h: number
-  logoUrl: string
-  marketCap?: number
+  id: number;
+  name: string;
+  symbol: string;
+  price: number;
+  change24h: number;
+  logoUrl: string;
+  marketCap?: number;
 }
 
 interface CryptoMarketProps {
-  onClose: () => void
+  onClose: () => void;
 }
 
 export default function CryptoMarket({ onClose }: CryptoMarketProps) {
-  const [activeTab, setActiveTab] = useState<"large-cap" | "meme-coins">("large-cap")
-  const [cryptoData, setCryptoData] = useState<CryptoData[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [lastUpdated, setLastUpdated] = useState<Date | null>(null)
-  const [error, setError] = useState<string | null>(null)
+  const [activeTab, setActiveTab] = useState<"large-cap" | "meme-coins">(
+    "large-cap"
+  );
+  const [cryptoData, setCryptoData] = useState<CryptoData[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchCryptoData()
-  }, [activeTab])
+    fetchCryptoData();
+  }, [activeTab]);
 
   const fetchCryptoData = async () => {
-    setIsLoading(true)
-    setError(null)
+    setIsLoading(true);
+    setError(null);
 
     try {
       const response = await fetch("/api/crypto-prices", {
@@ -42,45 +50,53 @@ export default function CryptoMarket({ onClose }: CryptoMarketProps) {
         body: JSON.stringify({
           category: activeTab,
         }),
-      })
+      });
 
-      const data = await response.json()
+      const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || `HTTP error! status: ${response.status}`)
+        throw new Error(data.error || `HTTP error! status: ${response.status}`);
       }
 
       if (data.error) {
-        throw new Error(data.error)
+        throw new Error(data.error);
       }
 
-      setCryptoData(data.cryptos || [])
-      setLastUpdated(new Date())
+      setCryptoData(data.cryptos || []);
+      setLastUpdated(new Date());
     } catch (error) {
-      console.error("Error fetching crypto data:", error)
-      setError(error instanceof Error ? error.message : "Failed to fetch crypto data")
-      setCryptoData([]) // Clear data on error
+      console.error("Error fetching crypto data:", error);
+      setError(
+        error instanceof Error ? error.message : "Failed to fetch crypto data"
+      );
+      setCryptoData([]); // Clear data on error
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const formatPrice = (price: number) => {
     if (price < 0.001) {
-      return `$${price.toFixed(8)}`
+      return `$${price.toFixed(8)}`;
     } else if (price < 1) {
-      return `$${price.toFixed(4)}`
+      return `$${price.toFixed(4)}`;
     } else if (price < 100) {
-      return `$${price.toFixed(2)}`
+      return `$${price.toFixed(2)}`;
     } else {
-      return `$${price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+      return `$${price.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`;
     }
-  }
+  };
 
   const formatLastUpdated = () => {
-    if (!lastUpdated) return ""
-    return lastUpdated.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-  }
+    if (!lastUpdated) return "";
+    return lastUpdated.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/50 backdrop-blur-sm">
@@ -88,16 +104,28 @@ export default function CryptoMarket({ onClose }: CryptoMarketProps) {
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-slate-700">
           <div className="flex items-center space-x-4">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xs">Plio</span>
+            <div className="w-10 h-10 rounded-lg overflow-hidden">
+              <img 
+                src="/plio_logo.jpg" 
+                alt="Plio Logo" 
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
 
           <div className="text-center flex-1">
-            <h2 className="text-2xl font-bold text-white mb-1">Crypto Market Overview</h2>
+            <h2 className="text-2xl font-bold text-white mb-1">
+              Crypto Market Overview
+            </h2>
             <div className="flex items-center justify-center space-x-2">
-              <p className="text-slate-400 text-sm">Live prices from CoinMarketCap</p>
-              {lastUpdated && <span className="text-slate-500 text-xs">• Updated {formatLastUpdated()}</span>}
+              <p className="text-slate-400 text-sm">
+                Live prices from CoinMarketCap
+              </p>
+              {lastUpdated && (
+                <span className="text-slate-500 text-xs">
+                  • Updated {formatLastUpdated()}
+                </span>
+              )}
             </div>
           </div>
 
@@ -110,9 +138,16 @@ export default function CryptoMarket({ onClose }: CryptoMarketProps) {
               className="text-slate-400 hover:text-white"
               title="Refresh prices"
             >
-              <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
+              <RefreshCw
+                className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`}
+              />
             </Button>
-            <Button variant="ghost" size="icon" onClick={onClose} className="text-slate-400 hover:text-white">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={onClose}
+              className="text-slate-400 hover:text-white"
+            >
               <X className="h-5 w-5" />
             </Button>
           </div>
@@ -154,9 +189,14 @@ export default function CryptoMarket({ onClose }: CryptoMarketProps) {
             <div className="flex flex-col items-center justify-center h-full space-y-4">
               <AlertCircle className="w-16 h-16 text-red-400" />
               <div className="text-center">
-                <h3 className="text-white text-lg font-semibold mb-2">Failed to Load Data</h3>
+                <h3 className="text-white text-lg font-semibold mb-2">
+                  Failed to Load Data
+                </h3>
                 <p className="text-slate-400 text-sm mb-4">{error}</p>
-                <Button onClick={fetchCryptoData} className="bg-blue-600 hover:bg-blue-700 text-white">
+                <Button
+                  onClick={fetchCryptoData}
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                >
                   Try Again
                 </Button>
               </div>
@@ -164,7 +204,10 @@ export default function CryptoMarket({ onClose }: CryptoMarketProps) {
           ) : isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {[...Array(6)].map((_, index) => (
-                <div key={index} className="bg-slate-800/40 border border-slate-700/50 rounded-lg p-6 animate-pulse">
+                <div
+                  key={index}
+                  className="bg-slate-800/40 border border-slate-700/50 rounded-lg p-6 animate-pulse"
+                >
                   <div className="flex items-center space-x-3 mb-4">
                     <div className="w-12 h-12 bg-slate-700 rounded-full"></div>
                     <div className="flex-1">
@@ -181,9 +224,16 @@ export default function CryptoMarket({ onClose }: CryptoMarketProps) {
             <div className="flex flex-col items-center justify-center h-full space-y-4">
               <AlertCircle className="w-16 h-16 text-yellow-400" />
               <div className="text-center">
-                <h3 className="text-white text-lg font-semibold mb-2">No Data Available</h3>
-                <p className="text-slate-400 text-sm mb-4">Unable to fetch cryptocurrency data at this time.</p>
-                <Button onClick={fetchCryptoData} className="bg-blue-600 hover:bg-blue-700 text-white">
+                <h3 className="text-white text-lg font-semibold mb-2">
+                  No Data Available
+                </h3>
+                <p className="text-slate-400 text-sm mb-4">
+                  Unable to fetch cryptocurrency data at this time.
+                </p>
+                <Button
+                  onClick={fetchCryptoData}
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                >
                   Retry
                 </Button>
               </div>
@@ -215,18 +265,22 @@ export default function CryptoMarket({ onClose }: CryptoMarketProps) {
                         className="w-full h-full object-cover rounded-full"
                         onError={(e) => {
                           // Fallback to text if image fails to load
-                          const target = e.target as HTMLImageElement
-                          target.style.display = "none"
-                          const parent = target.parentElement
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = "none";
+                          const parent = target.parentElement;
                           if (parent) {
-                            parent.innerHTML = `<span class="text-white font-bold text-lg">${crypto.symbol.charAt(0)}</span>`
+                            parent.innerHTML = `<span class="text-white font-bold text-lg">${crypto.symbol.charAt(
+                              0
+                            )}</span>`;
                           }
                         }}
                       />
                     </div>
                     <div className="flex-1">
                       {/* Coin Name */}
-                      <h3 className="text-white font-semibold text-lg">{crypto.name}</h3>
+                      <h3 className="text-white font-semibold text-lg">
+                        {crypto.name}
+                      </h3>
                       {/* Coin Symbol */}
                       <p className="text-slate-400 text-sm">{crypto.symbol}</p>
                     </div>
@@ -237,7 +291,13 @@ export default function CryptoMarket({ onClose }: CryptoMarketProps) {
                       ) : (
                         <TrendingDown className="w-4 h-4 text-red-400" />
                       )}
-                      <span className={`text-xs ml-1 ${crypto.change24h > 0 ? "text-green-400" : "text-red-400"}`}>
+                      <span
+                        className={`text-xs ml-1 ${
+                          crypto.change24h > 0
+                            ? "text-green-400"
+                            : "text-red-400"
+                        }`}
+                      >
                         {crypto.change24h > 0 ? "+" : ""}
                         {crypto.change24h.toFixed(1)}%
                       </span>
@@ -245,7 +305,9 @@ export default function CryptoMarket({ onClose }: CryptoMarketProps) {
                   </div>
                   <div className="text-center">
                     {/* Live Price */}
-                    <p className="text-white text-2xl font-bold">{formatPrice(crypto.price)}</p>
+                    <p className="text-white text-2xl font-bold">
+                      {formatPrice(crypto.price)}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -254,5 +316,5 @@ export default function CryptoMarket({ onClose }: CryptoMarketProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }

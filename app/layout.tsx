@@ -8,7 +8,10 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "Plio - Holder Panel",
   description: "Access exclusive holder tools for $Plio token holders",
-    generator: 'v0.dev'
+  generator: 'v0.dev',
+  icons: {
+    icon: '/plio_logo.jpg',
+  },
 }
 
 export default function RootLayout({

@@ -51,8 +51,8 @@ export default function Navigation() {
       <nav className="hidden lg:flex fixed left-0 top-0 h-full w-20 bg-gray-900/95 backdrop-blur-sm border-r border-gray-800 flex-col items-center py-6 z-40">
         {/* Logo */}
         <div className="mb-8">
-          <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-xs">Plio</span>
+          <div className="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center">
+            <img src="/plio_logo.jpg" alt="Plio Logo" className="w-full h-full object-cover" />
           </div>
         </div>
 
@@ -62,7 +62,7 @@ export default function Navigation() {
             <a
               key={index}
               href={item.href}
-              className="w-12 h-12 flex items-center justify-center rounded-xl hover:bg-gray-800 transition-colors group"
+              className="w-12 h-12 flex items-center justify-center rounded-xl transition-all duration-300 hover:bg-gray-800/80 hover:shadow-lg hover:shadow-purple-500/10 group transform hover:-translate-y-0.5 active:translate-y-0 active:scale-95"
               title={item.label}
               onClick={(e) => {
                 if (item.action || item.restricted) {
@@ -94,8 +94,8 @@ export default function Navigation() {
             {/* Logo */}
             <div className="mb-8 mt-12">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-xs">Plio</span>
+                <div className="w-10 h-10 rounded-lg overflow-hidden">
+                  <img src="/plio_logo.jpg" alt="Plio Logo" className="w-full h-full object-cover" />
                 </div>
                 <span className="text-white font-bold text-xl">Plio</span>
               </div>
@@ -107,7 +107,7 @@ export default function Navigation() {
                 <a
                   key={index}
                   href={item.href}
-                  className="flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-gray-800 transition-colors"
+                  className="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 hover:bg-gray-800/80 hover:shadow-lg hover:shadow-purple-500/10 transform hover:-translate-x-1 active:translate-x-0 active:scale-[0.98]"
                   onClick={(e) => {
                     if (item.action || item.restricted) {
                       e.preventDefault()

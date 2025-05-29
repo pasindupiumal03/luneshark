@@ -1,21 +1,29 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { X, TrendingUp, Activity, Bot, Search, Smartphone, DollarSign } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import {
+  X,
+  TrendingUp,
+  Activity,
+  Bot,
+  Search,
+  Smartphone,
+  DollarSign,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface RoadmapItem {
-  id: string
-  title: string
-  description: string
-  status: "IN PROGRESS" | "PLANNED" | "RESEARCHING"
-  icon: React.ComponentType<{ className?: string }>
-  iconColor: string
+  id: string;
+  title: string;
+  description: string;
+  status: "IN PROGRESS" | "PLANNED" | "RESEARCHING";
+  icon: React.ComponentType<{ className?: string }>;
+  iconColor: string;
 }
 
 interface ProjectRoadmapProps {
-  onClose: () => void
+  onClose: () => void;
 }
 
 const roadmapItems: RoadmapItem[] = [
@@ -73,21 +81,21 @@ const roadmapItems: RoadmapItem[] = [
     icon: DollarSign,
     iconColor: "bg-gradient-to-br from-emerald-500 to-green-500",
   },
-]
+];
 
 export default function ProjectRoadmap({ onClose }: ProjectRoadmapProps) {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "IN PROGRESS":
-        return "bg-blue-600/80 text-blue-100"
+        return "bg-blue-600/80 text-blue-100";
       case "PLANNED":
-        return "bg-yellow-600/80 text-yellow-100"
+        return "bg-yellow-600/80 text-yellow-100";
       case "RESEARCHING":
-        return "bg-purple-600/80 text-purple-100"
+        return "bg-purple-600/80 text-purple-100";
       default:
-        return "bg-gray-600/80 text-gray-100"
+        return "bg-gray-600/80 text-gray-100";
     }
-  }
+  };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/50 backdrop-blur-sm">
@@ -95,10 +103,19 @@ export default function ProjectRoadmap({ onClose }: ProjectRoadmapProps) {
         {/* Header with close button */}
         <div className="flex justify-between items-center p-6 border-b border-gray-800">
           <div className="text-center flex-1">
-            <h2 className="text-3xl font-bold text-white mb-1">Project Roadmap</h2>
-            <p className="text-gray-400 text-sm font-light">Upcoming Features & Enhancements</p>
+            <h2 className="text-3xl font-bold text-white mb-1">
+              Project Roadmap
+            </h2>
+            <p className="text-gray-400 text-sm font-light">
+              Upcoming Features & Enhancements
+            </p>
           </div>
-          <Button variant="ghost" size="icon" onClick={onClose} className="text-gray-400 hover:text-white">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onClose}
+            className="text-gray-400 hover:text-white"
+          >
             <X className="h-5 w-5" />
           </Button>
         </div>
@@ -118,11 +135,13 @@ export default function ProjectRoadmap({ onClose }: ProjectRoadmapProps) {
                   >
                     <item.icon className="w-5 h-5 text-white" />
                   </div>
-                  <h3 className="text-white font-semibold text-lg tracking-tight">{item.title}</h3>
+                  <h3 className="text-white font-semibold text-lg tracking-tight">
+                    {item.title}
+                  </h3>
                 </div>
                 <span
                   className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(
-                    item.status,
+                    item.status
                   )} shadow-inner tracking-wide`}
                 >
                   {item.status}
@@ -130,11 +149,13 @@ export default function ProjectRoadmap({ onClose }: ProjectRoadmapProps) {
               </div>
 
               {/* Description */}
-              <p className="text-gray-300 text-sm leading-relaxed font-light pl-10 tracking-wide">{item.description}</p>
+              <p className="text-gray-300 text-sm leading-relaxed font-light pl-10 tracking-wide">
+                {item.description}
+              </p>
             </div>
           ))}
         </div>
       </div>
     </div>
-  )
+  );
 }
