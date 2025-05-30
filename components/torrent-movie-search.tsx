@@ -1,111 +1,149 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { X, Loader2 } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { useState } from "react";
+import { X, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import Link from "next/link";
 
 interface Movie {
-  id: string
-  title: string
-  year: string
-  quality: string
-  size: string
-  source: string
+  id: string;
+  title: string;
+  year: string;
+  quality: string;
+  size: string;
+  source: string;
+  desc: string;
 }
 
 interface TorrentMovieSearchProps {
-  onClose: () => void
+  onClose: () => void;
 }
 
-export default function TorrentMovieSearch({ onClose }: TorrentMovieSearchProps) {
-  const [searchQuery, setSearchQuery] = useState("")
-  const [isSearching, setIsSearching] = useState(false)
-  const [searchResults, setSearchResults] = useState<Movie[]>([])
-  const [hasSearched, setHasSearched] = useState(false)
+const BASE_API_URL = "plio-v1-backend.vercel.app";
+
+export default function TorrentMovieSearch({
+  onClose,
+}: TorrentMovieSearchProps) {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchResults, setSearchResults] = useState<Movie[]>([]);
+  const [hasSearched, setHasSearched] = useState(false);
 
   // Mock data for demonstration - will be replaced with API call
-  const mockMovies: Movie[] = [
-    {
-      id: "1",
-      title: "Dune: Part Two",
-      year: "2024",
-      quality: "2160p 4K HDR10+ IMAX",
-      size: "18.6 GB",
-      source: "RARBG",
-    },
-    {
-      id: "2",
-      title: "Deadpool & Wolverine",
-      year: "2024",
-      quality: "1080p BluRay",
-      size: "12.4 GB",
-      source: "RARBG",
-    },
-    {
-      id: "3",
-      title: "The Batman",
-      year: "2022",
-      quality: "2160p 4K HDR10+",
-      size: "22.8 GB",
-      source: "RARBG",
-    },
-    {
-      id: "4",
-      title: "Oppenheimer",
-      year: "2023",
-      quality: "1080p IMAX",
-      size: "15.2 GB",
-      source: "RARBG",
-    },
-    {
-      id: "5",
-      title: "Interstellar",
-      year: "2014",
-      quality: "2160p 4K HDR10+",
-      size: "24.5 GB",
-      source: "RARBG",
-    },
-    {
-      id: "6",
-      title: "Inception",
-      year: "2010",
-      quality: "1080p BluRay",
-      size: "10.8 GB",
-      source: "RARBG",
-    },
-  ]
+  // const mockMovies: Movie[] = [
+  //   {
+  //     id: "1",
+  //     title: "Dune: Part Two",
+  //     year: "2024",
+  //     quality: "2160p 4K HDR10+ IMAX",
+  //     size: "18.6 GB",
+  //     source: "RARBG",
+  //   },
+  //   {
+  //     id: "2",
+  //     title: "Deadpool & Wolverine",
+  //     year: "2024",
+  //     quality: "1080p BluRay",
+  //     size: "12.4 GB",
+  //     source: "RARBG",
+  //   },
+  //   {
+  //     id: "3",
+  //     title: "The Batman",
+  //     year: "2022",
+  //     quality: "2160p 4K HDR10+",
+  //     size: "22.8 GB",
+  //     source: "RARBG",
+  //   },
+  //   {
+  //     id: "4",
+  //     title: "Oppenheimer",
+  //     year: "2023",
+  //     quality: "1080p IMAX",
+  //     size: "15.2 GB",
+  //     source: "RARBG",
+  //   },
+  //   {
+  //     id: "5",
+  //     title: "Interstellar",
+  //     year: "2014",
+  //     quality: "2160p 4K HDR10+",
+  //     size: "24.5 GB",
+  //     source: "RARBG",
+  //   },
+  //   {
+  //     id: "6",
+  //     title: "Inception",
+  //     year: "2010",
+  //     quality: "1080p BluRay",
+  //     size: "10.8 GB",
+  //     source: "RARBG",
+  //   },
+  // ]
+
+  // const handleSearch = async () => {
+  //   if (!searchQuery.trim()) return
+
+  //   setIsSearching(true)
+  //   setHasSearched(true)
+
+  //   // Simulate API call delay
+  //   setTimeout(() => {
+  //     // In a real implementation, this would be replaced with an actual API call
+  //     // using the torrent API key provided by the user
+  //     setSearchResults(mockMovies)
+  //     setIsSearching(false)
+  //   }, 2000)
+  // }
 
   const handleSearch = async () => {
-    if (!searchQuery.trim()) return
+    if (!searchQuery.trim()) return;
 
-    setIsSearching(true)
-    setHasSearched(true)
+    setIsSearching(true);
+    setHasSearched(true);
+    try {
+      const response = await fetch(
+        `${BASE_API_URL}/torrents/search?q=${encodeURIComponent(
+          searchQuery
+        )}&type=Movies`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch torrents");
+      }
+      const data = await response.json();
 
-    // Simulate API call delay
-    setTimeout(() => {
-      // In a real implementation, this would be replaced with an actual API call
-      // using the torrent API key provided by the user
-      setSearchResults(mockMovies)
-      setIsSearching(false)
-    }, 2000)
-  }
+      setSearchResults(data.results || []);
+    } catch (error) {
+      console.error("Error searching torrents:", error);
+      setSearchResults([]);
+    } finally {
+      setIsSearching(false);
+    }
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
-      handleSearch()
+      handleSearch();
     }
-  }
+  };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/50 backdrop-blur-sm">
       <div className="bg-gray-900/95 backdrop-blur-sm border border-gray-800 rounded-xl w-full max-w-4xl max-h-[90vh] overflow-auto p-6 shadow-2xl">
         {/* Header with close button */}
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-white">Search Movie Torrents</h2>
-          <Button variant="ghost" size="icon" onClick={onClose} className="text-gray-400 hover:text-white">
+          <h2 className="text-2xl font-bold text-white">
+            Search Movie Torrents
+          </h2>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onClose}
+            className="text-gray-400 hover:text-white"
+          >
             <X className="h-5 w-5" />
           </Button>
         </div>
@@ -138,7 +176,8 @@ export default function TorrentMovieSearch({ onClose }: TorrentMovieSearchProps)
 
         {/* Search tip */}
         <p className="text-gray-400 text-sm mb-6">
-          Tip: Use specific terms for better results (e.g., 'spider-man' works, 'spiderman' might not).
+          Tip: Use specific terms for better results (e.g., 'spider-man' works,
+          'spiderman' might not).
         </p>
 
         {/* Loading indicator */}
@@ -151,20 +190,40 @@ export default function TorrentMovieSearch({ onClose }: TorrentMovieSearchProps)
         {/* Search results */}
         {!isSearching && hasSearched && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {searchResults.map((movie) => (
-              <div key={movie.id} className="bg-gray-800/60 border border-gray-700 rounded-lg p-4">
+            {searchResults.map((movie, id) => (
+              <div
+                key={id}
+                className="bg-gray-800/60 border border-gray-700 rounded-lg p-4"
+              >
                 <h3 className="text-white font-semibold mb-1 text-center">
-                  {movie.title} <span className="text-gray-400">({movie.year})</span>
+                  {movie.title}{" "}
+                  <span className="text-gray-400">({movie.year})</span>
                 </h3>
-                <p className="text-gray-300 text-sm text-center mb-2">{movie.quality}</p>
+                <p className="text-gray-300 text-sm text-center mb-2">
+                  {movie.quality}
+                </p>
                 <div className="flex justify-center items-center gap-2 text-xs text-gray-400 mb-4">
                   <span>Size: {movie.size}</span>
                   <span>|</span>
                   <span>
-                    Source: <span className="text-orange-400">{movie.source}</span>
+                    Source:{" "}
+                    <span className="text-orange-400">{movie.source}</span>
                   </span>
                 </div>
-                <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white">Download Link</Button>
+                {movie.desc ? (
+                  <Link
+                    href={movie.desc}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full bg-purple-600 hover:bg-purple-700 text-white inline-block text-center py-2 rounded"
+                  >
+                    Download Link
+                  </Link>
+                ) : (
+                  <span className="w-full inline-block text-center text-gray-500 py-2">
+                    No download link
+                  </span>
+                )}
               </div>
             ))}
           </div>
@@ -179,5 +238,5 @@ export default function TorrentMovieSearch({ onClose }: TorrentMovieSearchProps)
         )}
       </div>
     </div>
-  )
+  );
 }

@@ -1,96 +1,131 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { X, Loader2 } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { useState } from "react";
+import { X, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import Link from "next/link";
 
 interface Game {
-  id: string
-  title: string
-  version: string
-  size: string
-  source: string
+  id: string;
+  title: string;
+  version: string;
+  size: string;
+  source: string;
+  desc: string;
 }
 
 interface TorrentGameSearchProps {
-  onClose: () => void
+  onClose: () => void;
 }
 
+const BASE_API_URL = "plio-v1-backend.vercel.app";
+
 export default function TorrentGameSearch({ onClose }: TorrentGameSearchProps) {
-  const [searchQuery, setSearchQuery] = useState("")
-  const [isSearching, setIsSearching] = useState(false)
-  const [searchResults, setSearchResults] = useState<Game[]>([])
-  const [hasSearched, setHasSearched] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchResults, setSearchResults] = useState<Game[]>([]);
+  const [hasSearched, setHasSearched] = useState(false);
 
   // Mock data for demonstration - will be replaced with API call
-  const mockGames: Game[] = [
-    {
-      id: "1",
-      title: "Days Gone Remastered (v1.08 + Broken Road DLC + MULTI23)",
-      version: "v1.08",
-      size: "38.4 GB",
-      source: "DODI Repack",
-    },
-    {
-      id: "2",
-      title: "Clair Obscur: Expedition 33 - Deluxe Edition",
-      version: "v56180 + All DLCs + Bonus Content + MULTI12",
-      size: "36.8 GB",
-      source: "DODI Repack",
-    },
-    {
-      id: "3",
-      title: "The Elder Scrolls IV: Oblivion Remastered - Deluxe Edition",
-      version: "v0.411.140.0 + All DLCs + Bonus Content + MULTI9",
-      size: "108.5 GB",
-      source: "DODI Repack",
-    },
-    {
-      id: "4",
-      title: "Steel Seed: Deluxe Edition",
-      version: "v1.0.4 + All DLCs + Bonus Content + MULTI12",
-      size: "15.6 GB",
-      source: "DODI Repack",
-    },
-    {
-      id: "5",
-      title: "Dragon Ball: Sparking! ZERO - Ultimate Edition",
-      version: "v1.0",
-      size: "45.2 GB",
-      source: "DODI Repack",
-    },
-    {
-      id: "6",
-      title: "Soulslinger: Envoy of Death",
-      version: "v1.0 + Bonus Content",
-      size: "22.8 GB",
-      source: "DODI Repack",
-    },
-  ]
+  // const mockGames: Game[] = [
+  //   {
+  //     id: "1",
+  //     title: "Days Gone Remastered (v1.08 + Broken Road DLC + MULTI23)",
+  //     version: "v1.08",
+  //     size: "38.4 GB",
+  //     source: "DODI Repack",
+  //   },
+  //   {
+  //     id: "2",
+  //     title: "Clair Obscur: Expedition 33 - Deluxe Edition",
+  //     version: "v56180 + All DLCs + Bonus Content + MULTI12",
+  //     size: "36.8 GB",
+  //     source: "DODI Repack",
+  //   },
+  //   {
+  //     id: "3",
+  //     title: "The Elder Scrolls IV: Oblivion Remastered - Deluxe Edition",
+  //     version: "v0.411.140.0 + All DLCs + Bonus Content + MULTI9",
+  //     size: "108.5 GB",
+  //     source: "DODI Repack",
+  //   },
+  //   {
+  //     id: "4",
+  //     title: "Steel Seed: Deluxe Edition",
+  //     version: "v1.0.4 + All DLCs + Bonus Content + MULTI12",
+  //     size: "15.6 GB",
+  //     source: "DODI Repack",
+  //   },
+  //   {
+  //     id: "5",
+  //     title: "Dragon Ball: Sparking! ZERO - Ultimate Edition",
+  //     version: "v1.0",
+  //     size: "45.2 GB",
+  //     source: "DODI Repack",
+  //   },
+  //   {
+  //     id: "6",
+  //     title: "Soulslinger: Envoy of Death",
+  //     version: "v1.0 + Bonus Content",
+  //     size: "22.8 GB",
+  //     source: "DODI Repack",
+  //   },
+  // ]
+
+  // const handleSearch = async () => {
+  //   if (!searchQuery.trim()) return
+
+  //   setIsSearching(true)
+  //   setHasSearched(true)
+
+  //   // Simulate API call delay
+  //   setTimeout(() => {
+  //     // In a real implementation, this would be replaced with an actual API call
+  //     // using the torrent API key provided by the user
+  //     setSearchResults(mockGames)
+  //     setIsSearching(false)
+  //   }, 2000)
+  // }
+
+  // const handleKeyDown = (e: React.KeyboardEvent) => {
+  //   if (e.key === "Enter") {
+  //     handleSearch()
+  //   }
+  // }
 
   const handleSearch = async () => {
-    if (!searchQuery.trim()) return
+    if (!searchQuery.trim()) return;
 
-    setIsSearching(true)
-    setHasSearched(true)
+    setIsSearching(true);
+    setHasSearched(true);
+    try {
+      const response = await fetch(
+        `${BASE_API_URL}/torrents/search?q=${encodeURIComponent(
+          searchQuery
+        )}&type=Games`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch torrents");
+      }
+      const data = await response.json();
 
-    // Simulate API call delay
-    setTimeout(() => {
-      // In a real implementation, this would be replaced with an actual API call
-      // using the torrent API key provided by the user
-      setSearchResults(mockGames)
-      setIsSearching(false)
-    }, 2000)
-  }
+      setSearchResults(data.results || []);
+    } catch (error) {
+      console.error("Error searching torrents:", error);
+      setSearchResults([]);
+    } finally {
+      setIsSearching(false);
+    }
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
-      handleSearch()
+      handleSearch();
     }
-  }
+  };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/50 backdrop-blur-sm">
@@ -98,7 +133,12 @@ export default function TorrentGameSearch({ onClose }: TorrentGameSearchProps) {
         {/* Header with close button */}
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-white">Torrent Game Search</h2>
-          <Button variant="ghost" size="icon" onClick={onClose} className="text-gray-400 hover:text-white">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onClose}
+            className="text-gray-400 hover:text-white"
+          >
             <X className="h-5 w-5" />
           </Button>
         </div>
@@ -131,7 +171,8 @@ export default function TorrentGameSearch({ onClose }: TorrentGameSearchProps) {
 
         {/* Search tip */}
         <p className="text-gray-400 text-sm mb-6">
-          Tip: Use specific terms for better results (e.g., 'spider-man' works, 'spiderman' might not).
+          Tip: Use specific terms for better results (e.g., 'spider-man' works,
+          'spiderman' might not).
         </p>
 
         {/* Loading indicator */}
@@ -144,18 +185,39 @@ export default function TorrentGameSearch({ onClose }: TorrentGameSearchProps) {
         {/* Search results */}
         {!isSearching && hasSearched && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {searchResults.map((game) => (
-              <div key={game.id} className="bg-gray-800/60 border border-gray-700 rounded-lg p-4">
-                <h3 className="text-white font-semibold mb-2 text-center">{game.title}</h3>
-                <p className="text-gray-300 text-sm text-center mb-2">{game.version}</p>
+            {searchResults.map((game, id) => (
+              <div
+                key={id}
+                className="bg-gray-800/60 border border-gray-700 rounded-lg p-4"
+              >
+                <h3 className="text-white font-semibold mb-2 text-center">
+                  {game.title}
+                </h3>
+                <p className="text-gray-300 text-sm text-center mb-2">
+                  {game.version}
+                </p>
                 <div className="flex justify-center items-center gap-2 text-xs text-gray-400 mb-4">
                   <span>Size: {game.size}</span>
                   <span>|</span>
                   <span>
-                    Source: <span className="text-orange-400">{game.source}</span>
+                    Source:{" "}
+                    <span className="text-orange-400">{game.source}</span>
                   </span>
                 </div>
-                <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white">Download Link</Button>
+                {game.desc ? (
+                  <Link
+                    href={game.desc}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full bg-purple-600 hover:bg-purple-700 text-white inline-block text-center py-2 rounded"
+                  >
+                    Download Link
+                  </Link>
+                ) : (
+                  <span className="w-full inline-block text-center text-gray-500 py-2">
+                    No download link
+                  </span>
+                )}
               </div>
             ))}
           </div>
@@ -170,5 +232,5 @@ export default function TorrentGameSearch({ onClose }: TorrentGameSearchProps) {
         )}
       </div>
     </div>
-  )
+  );
 }
