@@ -21,7 +21,7 @@ interface TorrentGameSearchProps {
   onClose: () => void;
 }
 
-const BASE_API_URL = "plio-v1-backend.vercel.app";
+const BASE_API_URL = "https://plio-backend.onrender.com";
 
 export default function TorrentGameSearch({ onClose }: TorrentGameSearchProps) {
   const [searchQuery, setSearchQuery] = useState("");

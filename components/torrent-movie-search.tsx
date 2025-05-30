@@ -22,7 +22,7 @@ interface TorrentMovieSearchProps {
   onClose: () => void;
 }
 
-const BASE_API_URL = "plio-v1-backend.vercel.app";
+const BASE_API_URL = "https://plio-backend.onrender.com";
 
 export default function TorrentMovieSearch({
   onClose,
@@ -197,7 +197,7 @@ export default function TorrentMovieSearch({
               >
                 <h3 className="text-white font-semibold mb-1 text-center">
                   {movie.title}{" "}
-                  <span className="text-gray-400">({movie.year})</span>
+                  {/* <span className="text-gray-400">({movie.year})</span> */}
                 </h3>
                 <p className="text-gray-300 text-sm text-center mb-2">
                   {movie.quality}
