@@ -162,7 +162,6 @@ export default function Navigation() {
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <span className="text-white font-bold text-xl">Plio</span>
               </div>
             </div>
 

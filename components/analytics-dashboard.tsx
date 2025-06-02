@@ -227,7 +227,7 @@ export default function AnalyticsDashboard({
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-2 sm:p-4 z-50 overflow-y-auto overflow-x-hidden">
+    <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/50 backdrop-blur-sm">
       <div className="bg-gray-900 bg-opacity-90 backdrop-blur-lg rounded-2xl shadow-2xl w-full max-w-[95vw] sm:max-w-3xl md:max-w-4xl max-h-[90vh] flex flex-col overflow-hidden border border-gray-800">
         {/* Header */}
         <div className="flex items-center justify-between p-3 sm:p-4 border-b border-gray-800">
@@ -262,7 +262,7 @@ export default function AnalyticsDashboard({
             </div>
             <Button
               type="submit"
-              disabled={loading}
+              disabled={loading || !tokenAddress}
               className="w-full sm:w-auto"
             >
               {loading ? (
