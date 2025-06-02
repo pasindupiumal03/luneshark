@@ -218,7 +218,7 @@ export default function Dashboard() {
       </div>
 
       <div className="min-h-screen w-full flex relative z-10">
-        <Navigation />
+        <Navigation isInHome={false} />
         <main className="flex-1 p-6 md:p-12 flex flex-col items-center w-full min-h-screen bg-transparent">
           <div className="w-full max-w-6xl mx-auto relative z-10">
             <div className="text-center mb-12">

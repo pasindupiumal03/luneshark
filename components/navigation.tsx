@@ -33,7 +33,11 @@ const menuItems = [
   { icon: TrendingUp, label: "Crypto Market", href: "#", action: "market" },
 ];
 
-export default function Navigation() {
+type NavigationProps = {
+  isInHome: boolean;
+};
+
+export default function Navigation({ isInHome }: NavigationProps) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [showGameSearch, setShowGameSearch] = useState(false);
@@ -99,7 +103,11 @@ export default function Navigation() {
   return (
     <>
       {/* Desktop Sidebar */}
-      <nav className="hidden lg:flex fixed left-0 top-0 h-full backdrop-blur-sm w-20 flex-col items-center py-6 z-40 bg-transparent">
+      <nav
+        className={`hidden lg:flex fixed left-0 ${
+          isInHome ? "-top-20" : "top-0"
+        } h-[200vh] backdrop-blur-sm w-20 flex-col items-center py-6 z-40 bg-transparent border-r-2`}
+      >
         {/* bg-gray-900/95 backdrop-blur-sm border-r border-gray-800 */}
         {/* Logo */}
         <div className="mb-8 cursor-pointer" onClick={() => router.push("/")}>

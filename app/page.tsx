@@ -80,7 +80,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen relative overflow-hidden">
       {/* Background with gradient */}
-      <Navigation />
+      <Navigation isInHome={true} />
       <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800">
         {/* Network pattern */}
         <div className="absolute inset-0 opacity-30">
@@ -204,6 +204,13 @@ export default function HomePage() {
                 size="icon"
                 variant="ghost"
                 className="bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm"
+                onClick={() =>
+                  window.open(
+                    "https://x.com/PlioSol",
+                    "_blank",
+                    "noopener,noreferrer"
+                  )
+                }
               >
                 <img
                   src="/X.png"
@@ -215,6 +222,13 @@ export default function HomePage() {
                 size="icon"
                 variant="ghost"
                 className="bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm"
+                onClick={() =>
+                  window.open(
+                    "https://telegram.org/PlioSol",
+                    "_blank",
+                    "noopener,noreferrer"
+                  )
+                }
               >
                 <img
                   src="/telegram.png"
@@ -226,6 +240,13 @@ export default function HomePage() {
                 size="icon"
                 variant="ghost"
                 className="bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm"
+                onClick={() =>
+                  window.open(
+                    "https://pump.fun/coin/2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump",
+                    "_blank",
+                    "noopener,noreferrer"
+                  )
+                }
               >
                 <img
                   src="/Pump_fun_logo.png"
@@ -237,6 +258,13 @@ export default function HomePage() {
                 size="icon"
                 variant="ghost"
                 className="bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm p-2"
+                onClick={() =>
+                  window.open(
+                    "https://dexscreener.com/solana/2cgwesvhz9gftdyqvbcje7lwvyoxk7oj35qega56vjfy",
+                    "_blank",
+                    "noopener,noreferrer"
+                  )
+                }
               >
                 <img
                   src="/dexscreener.jpg"
