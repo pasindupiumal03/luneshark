@@ -41,28 +41,28 @@ type ToolCard = {
 
 const toolCards: ToolCard[] = [
   {
-    name: "Games",
+    name: "Torrent Games",
     desc: "Access a collection of games available for download.",
     icon: <Gamepad2 className="w-6 h-6 text-white" />,
     gradient: "from-[#3385ff] to-[#6e6bff]",
     action: "games",
   },
   {
-    name: "Movies",
+    name: "Torrent Movies",
     desc: "Browse and download your favorite movies and TV shows.",
     icon: <Film className="w-6 h-6 text-white" />,
     gradient: "from-[#6e6bff] to-[#4ECDC4]",
     action: "movies",
   },
   {
-    name: "Analytics",
-    desc: "View detailed analytics and statistics.",
+    name: "Token Analytics",
+    desc: "Deep dive into any Solana token with detailed analytics ",
     icon: <BarChart3 className="w-6 h-6 text-white" />,
     gradient: "from-[#4ECDC4] to-[#3385ff]",
     action: "analytics",
   },
   {
-    name: "Images",
+    name: "Image Generator",
     desc: "Generate and download AI images.",
     icon: <ImageIcon className="w-6 h-6 text-white" />,
     gradient: "from-[#3385ff] to-[#4ECDC4]",
@@ -76,8 +76,8 @@ const toolCards: ToolCard[] = [
     action: "roadmap",
   },
   {
-    name: "PlioBot",
-    desc: "Chat with our AI assistant for help and information.",
+    name: "AI Chatbot",
+    desc: "Get instant answers to your blockchain questions.",
     icon: <Bot className="w-6 h-6 text-white" />,
     gradient: "from-[#6e6bff] to-[#3385ff]",
     action: "chat",
@@ -281,7 +281,7 @@ export default function Dashboard() {
                           </span>
                         )}
                         {card.comingSoon && (
-                          <span className="px-3 py-1 text-xs font-medium rounded-full bg-gradient-to-r from-blue-500/20 to-blue-600/20 text-white border border-blue-500/30">
+                          <span className="px-3 py-1 text-xs font-medium rounded-full bg-gradient-to-r from-blue-500/20 to-blue-600/20 text-blue-400 border border-blue-500/30">
                             Coming Soon
                           </span>
                         )}

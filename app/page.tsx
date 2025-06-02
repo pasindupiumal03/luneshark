@@ -263,7 +263,7 @@ export default function HomePage() {
             <Button
               size="icon"
               variant="ghost"
-              className="bg-white/10 hover:bg-white/20 text-white"
+              className="bg-white/10 hover:bg-white/20 active:text-white text-white"
               onClick={() =>
                 copyToClipboard("2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump")
               }

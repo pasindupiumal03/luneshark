@@ -263,7 +263,7 @@ export default function AnalyticsDashboard({
             <Button
               type="submit"
               disabled={loading || !tokenAddress}
-              className="w-full sm:w-auto"
+              className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700"
             >
               {loading ? (
                 <RefreshCw className="h-4 w-4 animate-spin mr-2" />
