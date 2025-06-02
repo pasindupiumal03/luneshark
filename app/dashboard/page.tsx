@@ -281,7 +281,7 @@ export default function Dashboard() {
                           </span>
                         )}
                         {card.comingSoon && (
-                          <span className="px-3 py-1 text-xs font-medium rounded-full bg-gradient-to-r from-blue-500/20 to-blue-600/20 text-blue-400 border border-blue-500/30">
+                          <span className="px-3 py-1 text-xs font-medium rounded-full bg-gradient-to-r from-blue-500/20 to-blue-600/20 text-white border border-blue-500/30">
                             Coming Soon
                           </span>
                         )}
