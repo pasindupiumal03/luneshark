@@ -1,8 +1,13 @@
 import axios from "axios";
 
 const DEXSCREENER_BASE_API_URL = "https://api.dexscreener.com";
-const SOLANA_TRACKER_API_URL = "https://data.solanatracker.io";
-const SOLANA_TRACKER_API_KEY = "ccebdde5-d68f-49ca-b2d9-83b62db5c29d";
+// Get API configuration from environment variables
+const SOLANA_TRACKER_API_URL = process.env.NEXT_PUBLIC_SOLANA_TRACKER_API_URL || "https://data.solanatracker.io";
+const SOLANA_TRACKER_API_KEY = process.env.SOLANA_TRACKER_API_KEY || "";
+
+if (!SOLANA_TRACKER_API_KEY) {
+  console.warn('SOLANA_TRACKER_API_KEY is not set. Some features may not work correctly.');
+}
 
 export const getTrendingTokens = async () => {
   try {
