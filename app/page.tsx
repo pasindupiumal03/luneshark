@@ -205,32 +205,45 @@ export default function HomePage() {
                 variant="ghost"
                 className="bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm"
               >
-                <Twitter className="w-5 h-5" />
+                <img
+                  src="/X.png"
+                  alt="twitter"
+                  className="w-5 h-5 rounded-md object-cover"
+                />
               </Button>
               <Button
                 size="icon"
                 variant="ghost"
                 className="bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm"
               >
-                <Send className="w-5 h-5" />
+                <img
+                  src="/telegram.png"
+                  alt="Telegram"
+                  className="w-5 h-5 rounded-md object-cover"
+                />
               </Button>
               <Button
                 size="icon"
                 variant="ghost"
                 className="bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm"
               >
-                <Globe className="w-5 h-5" />
+                <img
+                  src="/Pump_fun_logo.png"
+                  alt="Pumpfun"
+                  className="w-5 h-5 rounded-md object-cover"
+                />
               </Button>
-              {isWalletConnected && (
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  className="bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm"
-                  onClick={copyAddress}
-                >
-                  <Copy className="w-5 h-5" />
-                </Button>
-              )}
+              <Button
+                size="icon"
+                variant="ghost"
+                className="bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm p-2"
+              >
+                <img
+                  src="/dexscreener.jpg"
+                  alt="DexScreener"
+                  className="w-5 h-5 rounded-md object-cover"
+                />
+              </Button>
             </div>
           </div>
 
