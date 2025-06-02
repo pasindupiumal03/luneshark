@@ -32,73 +32,6 @@ export default function TorrentMovieSearch({
   const [searchResults, setSearchResults] = useState<Movie[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
 
-  // Mock data for demonstration - will be replaced with API call
-  // const mockMovies: Movie[] = [
-  //   {
-  //     id: "1",
-  //     title: "Dune: Part Two",
-  //     year: "2024",
-  //     quality: "2160p 4K HDR10+ IMAX",
-  //     size: "18.6 GB",
-  //     source: "RARBG",
-  //   },
-  //   {
-  //     id: "2",
-  //     title: "Deadpool & Wolverine",
-  //     year: "2024",
-  //     quality: "1080p BluRay",
-  //     size: "12.4 GB",
-  //     source: "RARBG",
-  //   },
-  //   {
-  //     id: "3",
-  //     title: "The Batman",
-  //     year: "2022",
-  //     quality: "2160p 4K HDR10+",
-  //     size: "22.8 GB",
-  //     source: "RARBG",
-  //   },
-  //   {
-  //     id: "4",
-  //     title: "Oppenheimer",
-  //     year: "2023",
-  //     quality: "1080p IMAX",
-  //     size: "15.2 GB",
-  //     source: "RARBG",
-  //   },
-  //   {
-  //     id: "5",
-  //     title: "Interstellar",
-  //     year: "2014",
-  //     quality: "2160p 4K HDR10+",
-  //     size: "24.5 GB",
-  //     source: "RARBG",
-  //   },
-  //   {
-  //     id: "6",
-  //     title: "Inception",
-  //     year: "2010",
-  //     quality: "1080p BluRay",
-  //     size: "10.8 GB",
-  //     source: "RARBG",
-  //   },
-  // ]
-
-  // const handleSearch = async () => {
-  //   if (!searchQuery.trim()) return
-
-  //   setIsSearching(true)
-  //   setHasSearched(true)
-
-  //   // Simulate API call delay
-  //   setTimeout(() => {
-  //     // In a real implementation, this would be replaced with an actual API call
-  //     // using the torrent API key provided by the user
-  //     setSearchResults(mockMovies)
-  //     setIsSearching(false)
-  //   }, 2000)
-  // }
-
   const handleSearch = async () => {
     if (!searchQuery.trim()) return;
 
@@ -132,17 +65,17 @@ export default function TorrentMovieSearch({
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/50 backdrop-blur-sm">
-      <div className="bg-gray-900/95 backdrop-blur-sm border border-gray-800 rounded-xl w-full max-w-4xl max-h-[90vh] overflow-auto p-6 shadow-2xl">
+      <div className="bg-gray-900/95 backdrop-blur-sm border border-gray-800 rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto overflow-x-hidden p-4 sm:p-6 shadow-2xl">
         {/* Header with close button */}
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-white">
-            Search Movie Torrents
+            Torrent Movie Search
           </h2>
           <Button
             variant="ghost"
             size="icon"
             onClick={onClose}
-            className="text-gray-400 hover:text-white"
+            className="text-gray-400 hover:text-gray-600"
           >
             <X className="h-5 w-5" />
           </Button>
@@ -152,7 +85,7 @@ export default function TorrentMovieSearch({
         <div className="flex gap-2 mb-4">
           <Input
             type="text"
-            placeholder="Enter movie title (e.g., Inception, Dune 2021)"
+            placeholder="Search for Movies..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={handleKeyDown}
@@ -161,12 +94,12 @@ export default function TorrentMovieSearch({
           <Button
             onClick={handleSearch}
             disabled={isSearching || !searchQuery.trim()}
-            className="bg-purple-600 hover:bg-purple-700 text-white min-w-[100px]"
+            className="bg-blue-600 hover:bg-blue-700 text-white min-w-[100px]"
           >
             {isSearching ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Searching...
+                <Loader2 className="ml-1 h-4 w-4 animate-spin" />
+                <p className="mr-1">Searching...</p>
               </>
             ) : (
               "Search"
@@ -175,7 +108,7 @@ export default function TorrentMovieSearch({
         </div>
 
         {/* Search tip */}
-        <p className="text-gray-400 text-sm mb-6">
+        <p className="text-gray-400 text-sm mb-6 truncate">
           Tip: Use specific terms for better results (e.g., 'spider-man' works,
           'spiderman' might not).
         </p>
@@ -189,23 +122,19 @@ export default function TorrentMovieSearch({
 
         {/* Search results */}
         {!isSearching && hasSearched && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-x-hidden">
             {searchResults.map((movie, id) => (
               <div
                 key={id}
-                className="bg-gray-800/60 border border-gray-700 rounded-lg p-4"
+                className="bg-gray-800/60 border border-gray-700 rounded-lg p-4 max-w-full"
               >
-                <h3 className="text-white font-semibold mb-1 text-center">
-                  {movie.title}{" "}
-                  {/* <span className="text-gray-400">({movie.year})</span> */}
+                <h3 className="text-white font-semibold mb-2 text-center truncate">
+                  {movie.title}
                 </h3>
-                <p className="text-gray-300 text-sm text-center mb-2">
-                  {movie.quality}
-                </p>
-                <div className="flex justify-center items-center gap-2 text-xs text-gray-400 mb-4">
-                  <span>Size: {movie.size}</span>
+                <div className="flex justify-center items-center gap-2 text-xs text-gray-400 mb-4 flex-wrap">
+                  <span className="truncate">Size: {movie.size}</span>
                   <span>|</span>
-                  <span>
+                  <span className="truncate">
                     Source:{" "}
                     <span className="text-orange-400">{movie.source}</span>
                   </span>

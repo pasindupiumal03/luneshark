@@ -1,51 +1,51 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState, useRef, useEffect } from "react"
-import { X, Send, Bot, User, Sparkles } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { useState, useRef, useEffect } from "react";
+import { X, Send, Bot, User, Sparkles } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 interface Message {
-  id: string
-  content: string
-  isUser: boolean
-  timestamp: Date
+  id: string;
+  content: string;
+  isUser: boolean;
+  timestamp: Date;
 }
 
 interface PlioBotProps {
-  onClose: () => void
+  onClose: () => void;
 }
 
 export default function PlioBot({ onClose }: PlioBotProps) {
-  const [messages, setMessages] = useState<Message[]>([])
-  const [inputValue, setInputValue] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const [isNiceMode, setIsNiceMode] = useState(true)
-  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [inputValue, setInputValue] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isNiceMode, setIsNiceMode] = useState(true);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   useEffect(() => {
-    scrollToBottom()
-  }, [messages])
+    scrollToBottom();
+  }, [messages]);
 
   const sendMessage = async () => {
-    if (!inputValue.trim() || isLoading) return
+    if (!inputValue.trim() || isLoading) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
       content: inputValue,
       isUser: true,
       timestamp: new Date(),
-    }
+    };
 
-    setMessages((prev) => [...prev, userMessage])
-    setInputValue("")
-    setIsLoading(true)
+    setMessages((prev) => [...prev, userMessage]);
+    setInputValue("");
+    setIsLoading(true);
 
     try {
       const response = await fetch("/api/chat", {
@@ -58,46 +58,47 @@ export default function PlioBot({ onClose }: PlioBotProps) {
           isNiceMode,
           conversationHistory: messages,
         }),
-      })
+      });
 
       if (!response.ok) {
-        throw new Error("Failed to get response")
+        throw new Error("Failed to get response");
       }
 
-      const data = await response.json()
+      const data = await response.json();
 
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
         content: data.message,
         isUser: false,
         timestamp: new Date(),
-      }
+      };
 
-      setMessages((prev) => [...prev, botMessage])
+      setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
-      console.error("Error sending message:", error)
+      console.error("Error sending message:", error);
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: "Sorry, I'm having trouble connecting right now. Please try again later.",
+        content:
+          "Sorry, I'm having trouble connecting right now. Please try again later.",
         isUser: false,
         timestamp: new Date(),
-      }
-      setMessages((prev) => [...prev, errorMessage])
+      };
+      setMessages((prev) => [...prev, errorMessage]);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault()
-      sendMessage()
+      e.preventDefault();
+      sendMessage();
     }
-  }
+  };
 
   const formatTime = (date: Date) => {
-    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-  }
+    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/60 backdrop-blur-sm">
@@ -105,9 +106,9 @@ export default function PlioBot({ onClose }: PlioBotProps) {
         {/* Header */}
         <div className="relative bg-gradient-to-r from-slate-800 to-slate-700 p-6 border-b border-slate-600/50">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
+            <div className="flex space-x-4 ml-24 lg:m-0">
               {/* Mode Toggle Buttons */}
-              <div className="flex space-x-2">
+              <div className="flex space-x-2 sm:items-center pt-24 lg:p-0">
                 <Button
                   size="sm"
                   variant={isNiceMode ? "default" : "outline"}
@@ -144,7 +145,9 @@ export default function PlioBot({ onClose }: PlioBotProps) {
                 PlioBot Chat
                 <span className="text-yellow-400 ml-2">✨</span>
               </h2>
-              <p className="text-xs text-slate-400 mt-1">Currently in {isNiceMode ? "nice" : "crude"} mode</p>
+              <p className="text-xs text-slate-400 mt-1">
+                Currently in {isNiceMode ? "nice" : "crude"} mode
+              </p>
             </div>
 
             {/* Close Button */}
@@ -152,7 +155,7 @@ export default function PlioBot({ onClose }: PlioBotProps) {
               variant="ghost"
               size="icon"
               onClick={onClose}
-              className="text-slate-400 hover:text-white hover:bg-slate-700/50 transition-all duration-200"
+              className="text-slate-400 hover:text-gray-600 hover:bg-slate-700/50 transition-all duration-200"
             >
               <X className="h-5 w-5" />
             </Button>
@@ -168,9 +171,15 @@ export default function PlioBot({ onClose }: PlioBotProps) {
                   <Bot className="w-8 h-8 text-white" />
                 </div>
                 <div>
-                  <p className="text-slate-300 text-lg font-medium">Welcome to PlioBot! 👋</p>
-                  <p className="text-slate-400 text-sm mt-2">Ask me about Plio, Solana, or the tools available!</p>
-                  <p className="text-slate-500 text-xs mt-1">Currently in {isNiceMode ? "nice" : "crude"} mode</p>
+                  <p className="text-slate-300 text-lg font-medium">
+                    Welcome to PlioBot! 👋
+                  </p>
+                  <p className="text-slate-400 text-sm mt-2">
+                    Ask me about Plio, Solana, or the tools available!
+                  </p>
+                  <p className="text-slate-500 text-xs mt-1">
+                    Currently in {isNiceMode ? "nice" : "crude"} mode
+                  </p>
                 </div>
               </div>
             </div>
@@ -190,19 +199,27 @@ export default function PlioBot({ onClose }: PlioBotProps) {
                 </div>
               )}
 
-              <div className={`flex flex-col ${message.isUser ? "items-end" : "items-start"} max-w-xs lg:max-w-md`}>
+              <div
+                className={`flex flex-col ${
+                  message.isUser ? "items-end" : "items-start"
+                } max-w-xs lg:max-w-md`}
+              >
                 <div
                   className={`px-4 py-3 rounded-2xl shadow-lg transition-all duration-200 hover:shadow-xl ${
                     message.isUser
                       ? "bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-cyan-500/25"
                       : isNiceMode
-                        ? "bg-gradient-to-r from-slate-700 to-slate-600 text-white shadow-slate-700/25 border border-slate-600/50"
-                        : "bg-gradient-to-r from-red-900/50 to-orange-900/50 text-white shadow-red-900/25 border border-red-800/50"
+                      ? "bg-gradient-to-r from-slate-700 to-slate-600 text-white shadow-slate-700/25 border border-slate-600/50"
+                      : "bg-gradient-to-r from-red-900/50 to-orange-900/50 text-white shadow-red-900/25 border border-red-800/50"
                   }`}
                 >
-                  <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
+                  <p className="text-sm leading-relaxed whitespace-pre-wrap">
+                    {message.content}
+                  </p>
                 </div>
-                <span className="text-xs text-slate-500 mt-1 px-2">{formatTime(message.timestamp)}</span>
+                <span className="text-xs text-slate-500 mt-1 px-2">
+                  {formatTime(message.timestamp)}
+                </span>
               </div>
 
               {message.isUser && (
@@ -232,7 +249,9 @@ export default function PlioBot({ onClose }: PlioBotProps) {
                         style={{ animationDelay: "0.2s" }}
                       ></div>
                     </div>
-                    <span className="text-slate-300 text-xs">PlioBot is thinking...</span>
+                    <span className="text-slate-300 text-xs">
+                      PlioBot is thinking...
+                    </span>
                   </div>
                 </div>
                 <span className="text-xs text-slate-500 mt-1 px-2">now</span>
@@ -269,7 +288,9 @@ export default function PlioBot({ onClose }: PlioBotProps) {
             </Button>
           </div>
           <div className="flex items-center justify-between mt-3">
-            <p className="text-xs text-slate-500">Press Enter to send • Shift+Enter for new line</p>
+            <p className="text-xs text-slate-500">
+              Press Enter to send • Shift+Enter for new line
+            </p>
             <div className="flex items-center space-x-2 text-xs text-slate-500">
               <div className="w-2 h-2 bg-green-400 rounded-full"></div>
               <span>AI Online</span>
@@ -278,5 +299,5 @@ export default function PlioBot({ onClose }: PlioBotProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }

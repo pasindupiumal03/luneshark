@@ -105,9 +105,9 @@ export default function CryptoMarket({ onClose }: CryptoMarketProps) {
         <div className="flex items-center justify-between p-6 border-b border-slate-700">
           <div className="flex items-center space-x-4">
             <div className="w-10 h-10 rounded-lg overflow-hidden">
-              <img 
-                src="/plio_logo.jpg" 
-                alt="Plio Logo" 
+              <img
+                src="/plio_logo.jpg"
+                alt="Plio Logo"
                 className="w-full h-full object-cover"
               />
             </div>
@@ -135,7 +135,7 @@ export default function CryptoMarket({ onClose }: CryptoMarketProps) {
               size="icon"
               onClick={fetchCryptoData}
               disabled={isLoading}
-              className="text-slate-400 hover:text-white"
+              className="text-slate-400 hover:text-gray-600"
               title="Refresh prices"
             >
               <RefreshCw
@@ -146,7 +146,7 @@ export default function CryptoMarket({ onClose }: CryptoMarketProps) {
               variant="ghost"
               size="icon"
               onClick={onClose}
-              className="text-slate-400 hover:text-white"
+              className="text-slate-400 hover:text-gray-600"
             >
               <X className="h-5 w-5" />
             </Button>

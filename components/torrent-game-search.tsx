@@ -29,73 +29,6 @@ export default function TorrentGameSearch({ onClose }: TorrentGameSearchProps) {
   const [searchResults, setSearchResults] = useState<Game[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
 
-  // Mock data for demonstration - will be replaced with API call
-  // const mockGames: Game[] = [
-  //   {
-  //     id: "1",
-  //     title: "Days Gone Remastered (v1.08 + Broken Road DLC + MULTI23)",
-  //     version: "v1.08",
-  //     size: "38.4 GB",
-  //     source: "DODI Repack",
-  //   },
-  //   {
-  //     id: "2",
-  //     title: "Clair Obscur: Expedition 33 - Deluxe Edition",
-  //     version: "v56180 + All DLCs + Bonus Content + MULTI12",
-  //     size: "36.8 GB",
-  //     source: "DODI Repack",
-  //   },
-  //   {
-  //     id: "3",
-  //     title: "The Elder Scrolls IV: Oblivion Remastered - Deluxe Edition",
-  //     version: "v0.411.140.0 + All DLCs + Bonus Content + MULTI9",
-  //     size: "108.5 GB",
-  //     source: "DODI Repack",
-  //   },
-  //   {
-  //     id: "4",
-  //     title: "Steel Seed: Deluxe Edition",
-  //     version: "v1.0.4 + All DLCs + Bonus Content + MULTI12",
-  //     size: "15.6 GB",
-  //     source: "DODI Repack",
-  //   },
-  //   {
-  //     id: "5",
-  //     title: "Dragon Ball: Sparking! ZERO - Ultimate Edition",
-  //     version: "v1.0",
-  //     size: "45.2 GB",
-  //     source: "DODI Repack",
-  //   },
-  //   {
-  //     id: "6",
-  //     title: "Soulslinger: Envoy of Death",
-  //     version: "v1.0 + Bonus Content",
-  //     size: "22.8 GB",
-  //     source: "DODI Repack",
-  //   },
-  // ]
-
-  // const handleSearch = async () => {
-  //   if (!searchQuery.trim()) return
-
-  //   setIsSearching(true)
-  //   setHasSearched(true)
-
-  //   // Simulate API call delay
-  //   setTimeout(() => {
-  //     // In a real implementation, this would be replaced with an actual API call
-  //     // using the torrent API key provided by the user
-  //     setSearchResults(mockGames)
-  //     setIsSearching(false)
-  //   }, 2000)
-  // }
-
-  // const handleKeyDown = (e: React.KeyboardEvent) => {
-  //   if (e.key === "Enter") {
-  //     handleSearch()
-  //   }
-  // }
-
   const handleSearch = async () => {
     if (!searchQuery.trim()) return;
 
@@ -137,7 +70,7 @@ export default function TorrentGameSearch({ onClose }: TorrentGameSearchProps) {
             variant="ghost"
             size="icon"
             onClick={onClose}
-            className="text-gray-400 hover:text-white"
+            className="text-gray-400 hover:text-gray-600"
           >
             <X className="h-5 w-5" />
           </Button>
@@ -156,12 +89,12 @@ export default function TorrentGameSearch({ onClose }: TorrentGameSearchProps) {
           <Button
             onClick={handleSearch}
             disabled={isSearching || !searchQuery.trim()}
-            className="bg-purple-600 hover:bg-purple-700 text-white min-w-[100px]"
+            className="bg-blue-600 hover:bg-blue-700 text-white min-w-[100px]"
           >
             {isSearching ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Searching...
+                <Loader2 className="ml-1 h-4 w-4 animate-spin" />
+                <p className="mr-1">Searching...</p>
               </>
             ) : (
               "Search"

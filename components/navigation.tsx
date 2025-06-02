@@ -1,61 +1,116 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Gamepad2, Film, BarChart3, ImageIcon, Map, Bot, TrendingUp, Menu, X } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import TorrentGameSearch from "./torrent-game-search"
-import TorrentMovieSearch from "./torrent-movie-search"
-import ProjectRoadmap from "./project-roadmap"
-import PlioBot from "./plio-bot"
-import CryptoMarket from "./crypto-market"
-import Notification from "./notification"
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import {
+  Gamepad2,
+  Film,
+  BarChart3,
+  ImageIcon,
+  Map,
+  Bot,
+  TrendingUp,
+  Menu,
+  X,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import TorrentGameSearch from "./torrent-game-search";
+import TorrentMovieSearch from "./torrent-movie-search";
+import ProjectRoadmap from "./project-roadmap";
+import PlioBot from "./plio-bot";
+import CryptoMarket from "./crypto-market";
+import AnalyticsDashboard from "./analytics-dashboard";
+import ImageGenerator from "./image-generator";
+import Notification from "./notification";
 
 const menuItems = [
   { icon: Gamepad2, label: "Games", href: "#", action: "games" },
   { icon: Film, label: "Movies", href: "#", action: "movies" },
-  { icon: BarChart3, label: "Analytics", href: "#", action: "analytics", restricted: true },
-  { icon: ImageIcon, label: "Images", href: "#", action: "images", restricted: true },
+  { icon: BarChart3, label: "Analytics", href: "#", action: "analytics" },
+  { icon: ImageIcon, label: "Images", href: "#", action: "images" },
   { icon: Map, label: "Roadmap", href: "#", action: "roadmap" },
   { icon: Bot, label: "PlioBot", href: "#", action: "chat" },
   { icon: TrendingUp, label: "Crypto Market", href: "#", action: "market" },
-]
+];
 
 export default function Navigation() {
-  const [isOpen, setIsOpen] = useState(false)
-  const [showGameSearch, setShowGameSearch] = useState(false)
-  const [showMovieSearch, setShowMovieSearch] = useState(false)
-  const [showRoadmap, setShowRoadmap] = useState(false)
-  const [showChat, setShowChat] = useState(false)
-  const [showMarket, setShowMarket] = useState(false)
-  const [showNotification, setShowNotification] = useState(false)
+  const router = useRouter();
+  const [isOpen, setIsOpen] = useState(false);
+  const [showGameSearch, setShowGameSearch] = useState(false);
+  const [showMovieSearch, setShowMovieSearch] = useState(false);
+  const [showRoadmap, setShowRoadmap] = useState(false);
+  const [showChat, setShowChat] = useState(false);
+  const [showMarket, setShowMarket] = useState(false);
+  const [showAnalytics, setShowAnalytics] = useState(false);
+  const [showImageGenerator, setShowImageGenerator] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
 
-  const handleMenuItemClick = (action?: string, restricted?: boolean) => {
-    if (action === "games") {
-      setShowGameSearch(true)
-    } else if (action === "movies") {
-      setShowMovieSearch(true)
-    } else if (action === "roadmap") {
-      setShowRoadmap(true)
-    } else if (action === "chat") {
-      setShowChat(true)
-    } else if (action === "market") {
-      setShowMarket(true)
-    } else if (restricted) {
-      setShowNotification(true)
+  // Listen for tool selection events from the dashboard
+  useEffect(() => {
+    const handleToolSelected = (event: Event) => {
+      const customEvent = event as CustomEvent<{ action: string }>;
+      const action = customEvent.detail?.action;
+      if (action) {
+        handleMenuItemClick(action);
+      }
+    };
+
+    window.addEventListener(
+      "toolSelected",
+      handleToolSelected as EventListener
+    );
+    return () => {
+      window.removeEventListener(
+        "toolSelected",
+        handleToolSelected as EventListener
+      );
+    };
+  }, []);
+
+  const handleMenuItemClick = (action: string) => {
+    switch (action) {
+      case "games":
+        setShowGameSearch(true);
+        break;
+      case "movies":
+        setShowMovieSearch(true);
+        break;
+      case "analytics":
+        setShowAnalytics(true);
+        break;
+      case "images":
+        setShowImageGenerator(true);
+        break;
+      case "roadmap":
+        setShowRoadmap(true);
+        break;
+      case "chat":
+        setShowChat(true);
+        break;
+      case "market":
+        setShowMarket(true);
+        break;
+      default:
+        setShowNotification(true);
+        break;
     }
-  }
+  };
 
   return (
     <>
       {/* Desktop Sidebar */}
-      <nav className="hidden lg:flex fixed left-0 top-0 h-full w-20 bg-gray-900/95 backdrop-blur-sm border-r border-gray-800 flex-col items-center py-6 z-40">
+      <nav className="hidden lg:flex fixed left-0 top-0 h-full backdrop-blur-sm w-20 flex-col items-center py-6 z-40 bg-transparent">
+        {/* bg-gray-900/95 backdrop-blur-sm border-r border-gray-800 */}
         {/* Logo */}
-        <div className="mb-8">
-          <div className="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center">
-            <img src="/plio_logo.jpg" alt="Plio Logo" className="w-full h-full object-cover" />
+        <div className="mb-8 cursor-pointer" onClick={() => router.push("/")}>
+          <div className="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center hover:opacity-80 transition-opacity">
+            <img
+              src="/plio_logo.jpg"
+              alt="Plio Logo"
+              className="w-full h-full object-cover"
+            />
           </div>
         </div>
-
         {/* Menu Items */}
         <div className="flex flex-col space-y-4">
           {menuItems.map((item, index) => (
@@ -65,13 +120,13 @@ export default function Navigation() {
               className="w-12 h-12 flex items-center justify-center rounded-xl transition-all duration-300 hover:bg-gray-800/80 hover:shadow-lg hover:shadow-purple-500/10 group transform hover:-translate-y-0.5 active:translate-y-0 active:scale-95"
               title={item.label}
               onClick={(e) => {
-                if (item.action || item.restricted) {
-                  e.preventDefault()
-                  handleMenuItemClick(item.action, item.restricted)
+                if (item.action) {
+                  e.preventDefault();
+                  handleMenuItemClick(item.action);
                 }
               }}
             >
-              <item.icon className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors" />
+              <item.icon className="text-white w-5 h-5 group-hover:text-white transition-colors" />
             </a>
           ))}
         </div>
@@ -81,21 +136,32 @@ export default function Navigation() {
       <Button
         variant="ghost"
         size="icon"
-        className="lg:hidden fixed top-4 left-4 z-50 bg-gray-900/80 backdrop-blur-sm border border-gray-700 hover:bg-gray-800"
+        className="lg:hidden fixed top-0 left-0 bg-gray-900/80 backdrop-blur-sm border border-gray-700 hover:bg-gray-800 z-50"
         onClick={() => setIsOpen(!isOpen)}
       >
-        {isOpen ? <X className="h-6 w-6 text-white" /> : <Menu className="h-6 w-6 text-white" />}
+        {isOpen ? (
+          <X className="h-6 w-6 text-white" />
+        ) : (
+          <Menu className="h-6 w-6 text-white" />
+        )}
       </Button>
 
       {/* Mobile Menu Overlay */}
       {isOpen && (
-        <div className="lg:hidden fixed inset-0 z-40 bg-black/50 backdrop-blur-sm" onClick={() => setIsOpen(false)}>
+        <div
+          className="lg:hidden fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
+          onClick={() => setIsOpen(false)}
+        >
           <nav className="fixed left-0 top-0 h-full w-64 bg-gray-900/95 backdrop-blur-sm border-r border-gray-800 p-6">
             {/* Logo */}
             <div className="mb-8 mt-12">
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 rounded-lg overflow-hidden">
-                  <img src="/plio_logo.jpg" alt="Plio Logo" className="w-full h-full object-cover" />
+                  <img
+                    src="/plio_logo.jpg"
+                    alt="Plio Logo"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <span className="text-white font-bold text-xl">Plio</span>
               </div>
@@ -109,10 +175,10 @@ export default function Navigation() {
                   href={item.href}
                   className="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 hover:bg-gray-800/80 hover:shadow-lg hover:shadow-purple-500/10 transform hover:-translate-x-1 active:translate-x-0 active:scale-[0.98]"
                   onClick={(e) => {
-                    if (item.action || item.restricted) {
-                      e.preventDefault()
-                      handleMenuItemClick(item.action, item.restricted)
-                      setIsOpen(false)
+                    if (item.action) {
+                      e.preventDefault();
+                      handleMenuItemClick(item.action);
+                      setIsOpen(false);
                     }
                   }}
                 >
@@ -128,18 +194,22 @@ export default function Navigation() {
       {/* Error Notification */}
       {showNotification && (
         <Notification
-          message="Requires at least 50000 $Plio to access."
-          type="error"
-          duration={5000}
+          title="Premium Feature"
+          message="This feature is only available for premium users."
+          type="info"
           onClose={() => setShowNotification(false)}
         />
       )}
 
       {/* Torrent Game Search Modal */}
-      {showGameSearch && <TorrentGameSearch onClose={() => setShowGameSearch(false)} />}
+      {showGameSearch && (
+        <TorrentGameSearch onClose={() => setShowGameSearch(false)} />
+      )}
 
       {/* Torrent Movie Search Modal */}
-      {showMovieSearch && <TorrentMovieSearch onClose={() => setShowMovieSearch(false)} />}
+      {showMovieSearch && (
+        <TorrentMovieSearch onClose={() => setShowMovieSearch(false)} />
+      )}
 
       {/* Project Roadmap Modal */}
       {showRoadmap && <ProjectRoadmap onClose={() => setShowRoadmap(false)} />}
@@ -149,6 +219,16 @@ export default function Navigation() {
 
       {/* Crypto Market Modal */}
       {showMarket && <CryptoMarket onClose={() => setShowMarket(false)} />}
+
+      {/* Analytics Dashboard Modal */}
+      {showAnalytics && (
+        <AnalyticsDashboard onClose={() => setShowAnalytics(false)} />
+      )}
+
+      {/* Image Generator Modal */}
+      {showImageGenerator && (
+        <ImageGenerator onClose={() => setShowImageGenerator(false)} />
+      )}
     </>
-  )
+  );
 }

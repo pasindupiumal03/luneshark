@@ -5,13 +5,14 @@ import { X, AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 interface NotificationProps {
+  title?: string
   message: string
   type?: "error" | "success" | "warning" | "info"
   duration?: number
   onClose?: () => void
 }
 
-export default function Notification({ message, type = "error", duration = 5000, onClose }: NotificationProps) {
+export default function Notification({ title, message, type = "error", duration = 5000, onClose }: NotificationProps) {
   const [isVisible, setIsVisible] = useState(true)
 
   useEffect(() => {
@@ -49,14 +50,21 @@ export default function Notification({ message, type = "error", duration = 5000,
 
   return (
     <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 animate-in slide-in-from-top duration-300">
-      <div
-        className={`flex items-center gap-3 px-4 py-3 rounded-lg border backdrop-blur-sm shadow-lg ${getTypeStyles()}`}
-      >
-        <AlertCircle className="h-5 w-5 flex-shrink-0" />
-        <span className="text-sm font-medium">{message}</span>
-        <Button variant="ghost" size="icon" onClick={handleClose} className="h-6 w-6 text-white hover:bg-white/20 ml-2">
-          <X className="h-4 w-4" />
-        </Button>
+      <div className={`flex flex-col gap-1 p-4 rounded-lg border backdrop-blur-sm shadow-lg max-w-md w-[90vw] ${getTypeStyles()}`}>
+        <div className="flex items-start justify-between gap-2">
+          <div className="flex-1">
+            {title && <h4 className="font-semibold text-sm">{title}</h4>}
+            <p className="text-sm opacity-90">{message}</p>
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="p-1 h-auto text-white/80 hover:bg-white/10 hover:text-white -mt-1 -mr-2"
+            onClick={handleClose}
+          >
+            <X className="w-4 h-4" />
+          </Button>
+        </div>
       </div>
     </div>
   )
