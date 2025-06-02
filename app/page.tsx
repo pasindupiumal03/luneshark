@@ -74,7 +74,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen relative overflow-hidden">
       {/* Background with gradient */}
-      <Navigation isInHome={true} />
+      <Navigation />
       <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800">
         {/* Network pattern */}
         <div className="absolute inset-0 opacity-30">
@@ -137,50 +137,37 @@ export default function HomePage() {
       </div>
 
       {/* Navigation */}
-      <nav className="relative z-10 p-6">
-        <div className="flex justify-between items-center max-w-7xl mx-auto">
-          <div className="flex items-center space-x-2">
-            <div className="w-10 h-10 flex items-center justify-center">
-              <img
-                src="/plio_logo.jpg"
-                alt="Plio Logo"
-                className="w-full h-full object-cover rounded-xl"
-              />
-            </div>
-            <span className="text-white font-semibold text-xl">Plio</span>
-          </div>
+      <div className=" fixed flex justify-between items-center max-w-7xl p-4 right-0">
+        <div className="flex items-center space-x-4">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleConnectWallet}
+            className="bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm"
+            disabled={connecting}
+          >
+            <Wallet className="w-4 h-4 mr-2" />
+            {connecting
+              ? "Connecting..."
+              : isWalletConnected
+              ? "Connected"
+              : "Connect Wallet"}
+          </Button>
 
-          <div className="flex items-center space-x-4">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleConnectWallet}
-              className="bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm"
-              disabled={connecting}
+          {isWalletConnected && (
+            <Badge
+              variant="secondary"
+              className="bg-green-500/20 text-green-300 border-green-500/30"
             >
-              <Wallet className="w-4 h-4 mr-2" />
-              {connecting
-                ? "Connecting..."
-                : isWalletConnected
-                ? "Connected"
-                : "Connect Wallet"}
-            </Button>
-
-            {isWalletConnected && (
-              <Badge
-                variant="secondary"
-                className="bg-green-500/20 text-green-300 border-green-500/30"
-              >
-                <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse" />
-                Connected
-              </Badge>
-            )}
-          </div>
+              <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse" />
+              Connected
+            </Badge>
+          )}
         </div>
-      </nav>
+      </div>
 
       {/* Main Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-120px)] px-6">
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-120px)] px-6 pt-4">
         <div className="text-center max-w-4xl mx-auto">
           {/* Logo */}
           <div className="mb-8">
@@ -277,7 +264,9 @@ export default function HomePage() {
               size="icon"
               variant="ghost"
               className="bg-white/10 hover:bg-white/20 text-white"
-              onClick={() => copyToClipboard("2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump")}
+              onClick={() =>
+                copyToClipboard("2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump")
+              }
             >
               <Copy className="w-4 h-4" />
             </Button>
@@ -352,7 +341,7 @@ export default function HomePage() {
           </div>
 
           {/* Features Grid */}
-          {isWalletConnected && plioBalance !== null && (
+          {isWalletConnected && (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12 max-w-4xl mx-auto">
               <Card className="bg-white/10 border-white/20 backdrop-blur-sm p-6 hover:bg-white/15 transition-all duration-300">
                 <TrendingUp className="w-8 h-8 text-green-400 mb-4 mx-auto" />

@@ -218,13 +218,15 @@ export default function Dashboard() {
       </div>
 
       <div className="min-h-screen w-full flex relative z-10">
-        <Navigation isInHome={false} />
+        <Navigation />
         <main className="flex-1 p-6 md:p-12 flex flex-col items-center w-full min-h-screen bg-transparent">
           <div className="w-full max-w-6xl mx-auto relative z-10">
             <div className="text-center mb-12">
-              <h2 className="text-4xl md:text-6xl font-bold text-yellow-300 tracking-tight mb-6 ">
-                $Plio{" "}
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#3385ff] via-[#6e6bff] to-[#4ECDC4] animate-gradient-x">
+              <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
+                <span className="bg-gradient-to-r from-yellow-300 via-pink-300 to-purple-300 bg-clip-text text-transparent font-extrabold">
+                  $Plio{" "}
+                </span>
+                <span className="bg-gradient-to-r from-blue-300 via-purple-300 to-pink-300 bg-clip-text text-transparent font-extrabold">
                   Features
                 </span>
               </h2>
@@ -239,50 +241,51 @@ export default function Dashboard() {
                 <div
                   key={index}
                   className={`group relative ${
-                    card.comingSoon || card.restricted
-                      ? "opacity-70"
-                      : "cursor-pointer"
+                    card.comingSoon || card.restricted ? "" : "cursor-pointer"
                   }`}
                   onClick={() => handleToolCardClick(card)}
                 >
-                  <div className="glass-navbar p-8 rounded-2xl h-full relative overflow-hidden transition-all duration-300 hover:scale-[1.02]">
-                    {/* Gradient background */}
+                  <div className="backdrop-blur-md bg-white/10 border-2 border-white/30 glass-navbar p-8 rounded-2xl h-full relative overflow-hidden transition-all duration-300 hover:scale-[1.02]">
                     <div
-                      className={`absolute inset-0 bg-gradient-to-br ${card.gradient} opacity-10 group-hover:opacity-20 transition-opacity duration-300`}
-                    />
-
-                    {/* Icon */}
-                    <div className="relative mb-6">
+                      className={
+                        card.comingSoon || card.restricted ? "opacity-70" : ""
+                      }
+                    >
+                      {/* Gradient background */}
                       <div
-                        className={`absolute inset-0 bg-gradient-to-br ${card.gradient} rounded-xl blur-lg opacity-50 group-hover:opacity-70 transition-opacity`}
+                        className={`absolute inset-0 bg-gradient-to-br ${card.gradient} opacity-10 group-hover:opacity-20 transition-opacity duration-300`}
                       />
-                      <div
-                        className={`relative w-16 h-16 rounded-xl flex items-center justify-center bg-gradient-to-br ${card.gradient} text-white`}
-                      >
-                        {card.icon}
+
+                      {/* Icon */}
+                      <div className="relative mb-6">
+                        <div
+                          className={`relative w-16 h-16 rounded-xl flex items-center justify-center bg-gradient-to-br ${card.gradient} text-white`}
+                        >
+                          {card.icon}
+                        </div>
                       </div>
-                    </div>
 
-                    {/* Content */}
-                    <div className="relative">
-                      <h3 className="text-xl font-bold text-white mb-2">
-                        {card.name}
-                      </h3>
-                      <p className="text-gray-300 mb-4">{card.desc}</p>
-                    </div>
+                      {/* Content */}
+                      <div className="relative">
+                        <h3 className="text-xl font-bold text-white mb-2">
+                          {card.name}
+                        </h3>
+                        <p className="text-gray-300 mb-4">{card.desc}</p>
+                      </div>
 
-                    {/* Badges */}
-                    <div className="flex flex-wrap gap-2 mt-4">
-                      {card.restricted && (
-                        <span className="px-3 py-1 text-xs font-medium rounded-full bg-gradient-to-r from-red-500/20 to-red-600/20 text-red-400 border border-red-500/30">
-                          Premium
-                        </span>
-                      )}
-                      {card.comingSoon && (
-                        <span className="px-3 py-1 text-xs font-medium rounded-full bg-gradient-to-r from-blue-500/20 to-blue-600/20 text-blue-400 border border-blue-500/30">
-                          Coming Soon
-                        </span>
-                      )}
+                      {/* Badges */}
+                      <div className="flex flex-wrap gap-2 mt-4">
+                        {card.restricted && (
+                          <span className="px-3 py-1 text-xs font-medium rounded-full bg-gradient-to-r from-red-500/20 to-red-600/20 text-red-400 border border-red-500/30">
+                            Premium
+                          </span>
+                        )}
+                        {card.comingSoon && (
+                          <span className="px-3 py-1 text-xs font-medium rounded-full bg-gradient-to-r from-blue-500/20 to-blue-600/20 text-blue-400 border border-blue-500/30">
+                            Coming Soon
+                          </span>
+                        )}
+                      </div>
                     </div>
 
                     {/* Hover effect */}
@@ -309,6 +312,11 @@ export default function Dashboard() {
             .animate-gradient-x {
               background-size: 200% auto;
               animation: gradient-x 8s ease infinite;
+            }
+
+            .glass-navbar {
+              backdrop-filter: blur(8px);
+              -webkit-backdrop-filter: blur(8px); /* For Safari support */
             }
           `}</style>
         </main>

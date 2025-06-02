@@ -33,11 +33,7 @@ const menuItems = [
   { icon: TrendingUp, label: "Crypto Market", href: "#", action: "market" },
 ];
 
-type NavigationProps = {
-  isInHome: boolean;
-};
-
-export default function Navigation({ isInHome }: NavigationProps) {
+export default function Navigation() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [showGameSearch, setShowGameSearch] = useState(false);
@@ -103,15 +99,10 @@ export default function Navigation({ isInHome }: NavigationProps) {
   return (
     <>
       {/* Desktop Sidebar */}
-      <nav
-        className={`hidden lg:flex fixed left-0 ${
-          isInHome ? "-top-20" : "top-0"
-        } h-[200vh] backdrop-blur-sm w-20 flex-col items-center py-6 z-40 bg-transparent border-r-2`}
-      >
-        {/* bg-gray-900/95 backdrop-blur-sm border-r border-gray-800 */}
+      <nav className="hidden lg:flex fixed left-0 top-0 h-[200vh] bg-blue-500 w-20 flex-col items-center py-6 z-40 bg-transparent border-r-2 border-[#a1a3ef]">
         {/* Logo */}
         <div className="mb-8 cursor-pointer" onClick={() => router.push("/")}>
-          <div className="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center hover:opacity-80 transition-opacity">
+          <div className="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center hover:opacity-80 transition-opacity mb-10">
             <img
               src="/plio_logo.jpg"
               alt="Plio Logo"
