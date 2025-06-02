@@ -62,16 +62,10 @@ export default function HomePage() {
     }
   };
 
-  const copyAddress = () => {
-    if (walletAddress) {
-      navigator.clipboard.writeText(walletAddress);
-    }
-  };
-
-  // Format wallet address for display
-  const formatAddress = (address: string) => {
-    if (!address) return "";
-    return `${address.slice(0, 4)}...${address.slice(-4)}`;
+  // Copy address to clipboard
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    // You can add a toast notification here if you want
   };
 
   // Check if user has enough $Plio for premium features
@@ -275,16 +269,19 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Address Display */}
-          {isWalletConnected && (
-            <div className="mb-6">
-              <Card className="bg-white/10 border-white/20 backdrop-blur-sm p-3 inline-block">
-                <code className="text-green-300 text-sm font-mono">
-                  {formatAddress(walletAddress)}
-                </code>
-              </Card>
-            </div>
-          )}
+          <div className="mb-6 lg:mb-8 flex items-center justify-center gap-2">
+            <p className="text-xs sm:text-sm font-mono break-all px-4 py-2 bg-white/10 rounded-lg">
+              2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump
+            </p>
+            <Button
+              size="icon"
+              variant="ghost"
+              className="bg-white/10 hover:bg-white/20 text-white"
+              onClick={() => copyToClipboard("2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump")}
+            >
+              <Copy className="w-4 h-4" />
+            </Button>
+          </div>
 
           {/* Main Heading */}
           <div className="relative mb-8">
