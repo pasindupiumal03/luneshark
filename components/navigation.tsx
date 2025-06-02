@@ -99,7 +99,7 @@ export default function Navigation() {
   return (
     <>
       {/* Desktop Sidebar */}
-      <nav className="hidden lg:flex fixed left-0 top-0 h-[200vh] bg-blue-500 w-20 flex-col items-center py-6 z-40 border-r-2 border-[#a1a3ef]">
+      <nav className="hidden lg:flex fixed left-0 top-0 h-[200vh] bg-white/20 w-20 flex-col items-center py-6 z-40 border-r-2 border-white/20">
         {/* Logo */}
         <div className="mb-8 cursor-pointer" onClick={() => router.push("/")}>
           <div className="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center hover:opacity-80 transition-opacity mb-10">
