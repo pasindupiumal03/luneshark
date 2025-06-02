@@ -177,8 +177,6 @@ export default function PlioBot({ onClose }: PlioBotProps) {
                   }`}
                 >
                   <Bot className="w-8 h-8 text-white" />
-                  {/* from-red-500 to-orange-500 */}
-                  {/* from-cyan-500 to-blue-600 */}
                 </div>
                 <div>
                   <p className="text-slate-300 text-lg font-medium">
@@ -209,7 +207,9 @@ export default function PlioBot({ onClose }: PlioBotProps) {
                     isNiceMode
                       ? "from-cyan-500 to-blue-600"
                       : "from-red-500 to-orange-500"
-                  } rounded-full flex items-center justify-center shadow-lg shadow-cyan-500/25 mb-1`}
+                  } rounded-full flex items-center justify-center shadow-lg ${
+                    isNiceMode ? "shadow-cyan-500/25" : "shadow-red-500/25"
+                  } mb-1`}
                 >
                   <Bot className="w-4 h-4 text-white" />
                 </div>
@@ -301,14 +301,15 @@ export default function PlioBot({ onClose }: PlioBotProps) {
               <Input
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
-                onKeyPress={handleKeyPress}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleKeyPress(e);
+                  }
+                }}
                 placeholder="Ask PlioBot anything..."
                 className="bg-slate-700/50 border-slate-600 text-white placeholder-slate-400 focus:border-cyan-500 focus:ring-cyan-500/20 rounded-xl pr-12 py-3 transition-all duration-200"
                 disabled={isLoading}
               />
-              <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
-              </div>
             </div>
             <Button
               onClick={sendMessage}

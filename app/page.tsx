@@ -19,6 +19,7 @@ import { useRouter } from "next/navigation";
 import { useWallet } from "@/contexts/WalletContext";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import Navigation from "@/components/navigation";
 
 // Dynamically import particles to avoid SSR issues
 const ParticlesBackground = dynamic(
@@ -79,6 +80,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen relative overflow-hidden">
       {/* Background with gradient */}
+      <Navigation />
       <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800">
         {/* Network pattern */}
         <div className="absolute inset-0 opacity-30">
@@ -145,9 +147,9 @@ export default function HomePage() {
         <div className="flex justify-between items-center max-w-7xl mx-auto">
           <div className="flex items-center space-x-2">
             <div className="w-10 h-10 flex items-center justify-center">
-              <img 
-                src="/plio_logo.jpg" 
-                alt="Plio Logo" 
+              <img
+                src="/plio_logo.jpg"
+                alt="Plio Logo"
                 className="w-full h-full object-cover rounded-xl"
               />
             </div>
