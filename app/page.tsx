@@ -194,7 +194,7 @@ export default function HomePage() {
                 }
               >
                 <img
-                  src="/X.png"
+                  src="/x-twitter-brands-solid.svg"
                   alt="twitter"
                   className="w-5 h-5 rounded-md object-cover"
                 />
