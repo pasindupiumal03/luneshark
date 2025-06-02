@@ -167,8 +167,18 @@ export default function PlioBot({ onClose }: PlioBotProps) {
           {messages.length === 0 && (
             <div className="flex items-center justify-center h-full">
               <div className="text-center space-y-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center mx-auto shadow-lg shadow-cyan-500/25">
+                <div
+                  className={`w-16 h-16 bg-gradient-to-br ${
+                    isNiceMode
+                      ? "from-cyan-500 to-blue-600"
+                      : "from-red-500 to-orange-500"
+                  } rounded-full flex items-center justify-center mx-auto shadow-lg ${
+                    isNiceMode ? "shadow-cyan-500/25" : "shadow-red-500/25"
+                  }`}
+                >
                   <Bot className="w-8 h-8 text-white" />
+                  {/* from-red-500 to-orange-500 */}
+                  {/* from-cyan-500 to-blue-600 */}
                 </div>
                 <div>
                   <p className="text-slate-300 text-lg font-medium">
@@ -194,7 +204,13 @@ export default function PlioBot({ onClose }: PlioBotProps) {
               style={{ animationDelay: `${index * 50}ms` }}
             >
               {!message.isUser && (
-                <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg shadow-cyan-500/25 mb-1">
+                <div
+                  className={`w-8 h-8 bg-gradient-to-br ${
+                    isNiceMode
+                      ? "from-cyan-500 to-blue-600"
+                      : "from-red-500 to-orange-500"
+                  } rounded-full flex items-center justify-center shadow-lg shadow-cyan-500/25 mb-1`}
+                >
                   <Bot className="w-4 h-4 text-white" />
                 </div>
               )}
@@ -232,20 +248,36 @@ export default function PlioBot({ onClose }: PlioBotProps) {
 
           {isLoading && (
             <div className="flex items-end space-x-3 animate-in slide-in-from-bottom duration-300">
-              <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg shadow-cyan-500/25 mb-1">
+              <div
+                className={`w-8 h-8 bg-gradient-to-br ${
+                  isNiceMode
+                    ? "from-cyan-500 to-blue-600"
+                    : "from-red-500 to-orange-500"
+                } rounded-full flex items-center justify-center shadow-lg ${
+                  isNiceMode ? "shadow-cyan-500/25" : "shadow-red-500/25"
+                } mb-1`}
+              >
                 <Bot className="w-4 h-4 text-white" />
               </div>
               <div className="flex flex-col items-start max-w-xs lg:max-w-md">
                 <div className="bg-gradient-to-r from-slate-700 to-slate-600 text-white shadow-slate-700/25 border border-slate-600/50 px-4 py-3 rounded-2xl shadow-lg">
                   <div className="flex items-center space-x-2">
                     <div className="flex space-x-1">
-                      <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce"></div>
                       <div
-                        className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce"
+                        className={`w-2 h-2 ${
+                          isNiceMode ? "bg-cyan-400" : "bg-red-500"
+                        } rounded-full animate-bounce`}
+                      ></div>
+                      <div
+                        className={`w-2 h-2 ${
+                          isNiceMode ? "bg-cyan-400" : "bg-red-500"
+                        } rounded-full animate-bounce`}
                         style={{ animationDelay: "0.1s" }}
                       ></div>
                       <div
-                        className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce"
+                        className={`w-2 h-2 ${
+                          isNiceMode ? "bg-cyan-400" : "bg-red-500"
+                        } rounded-full animate-bounce`}
                         style={{ animationDelay: "0.2s" }}
                       ></div>
                     </div>
