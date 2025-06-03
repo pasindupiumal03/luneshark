@@ -19,13 +19,10 @@ type TokenBalance = {
 };
 
 type WalletContextType = {
-  // Existing properties
   walletAddress: string | null;
   connectWallet: () => Promise<void>;
-  disconnectWallet: () => void;
+  disconnectWallet: () => Promise<void>;
   connecting: boolean;
-
-  // New token balance properties
   getTokenBalance: (
     tokenMintAddress: string,
     decimals?: number
@@ -46,34 +43,40 @@ export function WalletProvider({
   children: ReactNode;
   rpcEndpoint?: string;
 }) {
-  // Existing state
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const [connecting, setConnecting] = useState(false);
-
-  // New token balance state
   const [tokenBalances, setTokenBalances] = useState<TokenBalance[]>([]);
   const [loadingTokens, setLoadingTokens] = useState(false);
-
-  // Solana connection instance
   const [connection] = useState(() => new Connection(rpcEndpoint));
 
-  // Load wallet address from localStorage on mount
+  // Load wallet address on mount, but only attempt auto-connect if explicitly allowed
   useEffect(() => {
     if (typeof window === "undefined") return;
 
     const savedAddress = localStorage.getItem("walletAddress");
-    if (savedAddress) {
-      setWalletAddress(savedAddress);
-    } else if (window.solana && window.solana.isPhantom) {
-      // Try to auto-connect if Phantom is already connected
+    const shouldAutoConnect = localStorage.getItem("autoConnect") === "true";
+
+    if (
+      savedAddress &&
+      shouldAutoConnect &&
+      window.solana &&
+      window.solana.isPhantom
+    ) {
       window.solana
         .connect({ onlyIfTrusted: true })
         .then((resp: { publicKey: { toString: () => string } }) => {
           const address = resp.publicKey.toString();
-          setWalletAddress(address);
-          localStorage.setItem("walletAddress", address);
+          if (address === savedAddress) {
+            setWalletAddress(address);
+          } else {
+            localStorage.removeItem("walletAddress");
+            localStorage.removeItem("autoConnect");
+          }
         })
-        .catch(() => {});
+        .catch(() => {
+          localStorage.removeItem("walletAddress");
+          localStorage.removeItem("autoConnect");
+        });
     }
   }, []);
 
@@ -90,7 +93,6 @@ export function WalletProvider({
     setConnecting(true);
     let tries = 0;
 
-    // Wait for Phantom to be injected
     while (typeof window !== "undefined" && !window.solana && tries < 10) {
       await new Promise((res) => setTimeout(res, 200));
       tries++;
@@ -106,7 +108,7 @@ export function WalletProvider({
         const address = resp.publicKey.toString();
         setWalletAddress(address);
         localStorage.setItem("walletAddress", address);
-        // Token balances will auto-load via useEffect
+        localStorage.setItem("autoConnect", "true");
       } else {
         alert(
           "Phantom wallet not found. Please install the Phantom extension."
@@ -119,16 +121,23 @@ export function WalletProvider({
     }
   };
 
-  const disconnectWallet = () => {
+  const disconnectWallet = async () => {
     setWalletAddress(null);
     setTokenBalances([]);
     localStorage.removeItem("walletAddress");
+    localStorage.removeItem("autoConnect");
+
     if (
       typeof window !== "undefined" &&
       window.solana &&
       window.solana.isPhantom
     ) {
-      window.solana.disconnect && window.solana.disconnect();
+      try {
+        await window.solana.disconnect();
+        console.log("Wallet disconnected successfully");
+      } catch (error) {
+        console.error("Error disconnecting wallet:", error);
+      }
     }
   };
 
@@ -145,25 +154,19 @@ export function WalletProvider({
       try {
         const userPublicKey = new PublicKey(walletAddress);
         const tokenMintPublicKey = new PublicKey(tokenMintAddress);
-
-        // Get the associated token account address
         const associatedTokenAddress = await getAssociatedTokenAddress(
           tokenMintPublicKey,
           userPublicKey
         );
 
         try {
-          // Get token account info
           const tokenAccount = await getAccount(
             connection,
             associatedTokenAddress
           );
-
-          // Convert balance from smallest unit to readable format
           const balance = Number(tokenAccount.amount) / Math.pow(10, decimals);
           return balance;
         } catch (tokenError: any) {
-          // Token account doesn't exist (balance is 0)
           if (tokenError.name === "TokenAccountNotFoundError") {
             return 0;
           }
@@ -184,8 +187,6 @@ export function WalletProvider({
 
     try {
       const userPublicKey = new PublicKey(walletAddress);
-
-      // Get all token accounts owned by the user
       const tokenAccounts = await connection.getParsedTokenAccountsByOwner(
         userPublicKey,
         {
@@ -237,13 +238,10 @@ export function WalletProvider({
   return (
     <WalletContext.Provider
       value={{
-        // Existing values
         walletAddress,
         connectWallet,
         disconnectWallet,
         connecting,
-
-        // New token balance values
         getTokenBalance,
         getAllTokenBalances,
         refreshTokenBalances,

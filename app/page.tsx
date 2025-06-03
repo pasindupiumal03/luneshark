@@ -137,31 +137,36 @@ export default function HomePage() {
       </div>
 
       {/* Navigation */}
-      <div className=" fixed flex justify-between items-center max-w-7xl p-4 right-0">
-        <div className="flex items-center space-x-4">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleConnectWallet}
-            className="bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm"
-            disabled={connecting}
-          >
-            <Wallet className="w-4 h-4 mr-2" />
-            {connecting
-              ? "Connecting..."
-              : isWalletConnected
-              ? "Connected"
-              : "Connect Wallet"}
-          </Button>
+      <div className="fixed top-0 right-0 w-fit p-2 z-50">
+        <div className="flex flex-col sm:flex-row items-end sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
+          <div className="flex items-center space-x-1 bg-white/10 border border-white/20 text-white rounded-md px-2 py-1 sm:px-3 sm:py-1.5 transition-colors duration-200 backdrop-blur-sm">
+            <Wallet className="w-3 h-3 sm:w-4 sm:h-4" />
+            <span className="text-xs sm:text-sm font-medium">
+              {connecting
+                ? "Connecting..."
+                : isWalletConnected
+                ? `${walletAddress.slice(0, 4)}...${walletAddress.slice(-4)}`
+                : "Connect Wallet"}
+            </span>
+            {isWalletConnected && (
+              <Button
+                size="icon"
+                variant="ghost"
+                className="bg-white/10 hover:bg-white/20 active:text-white text-white p-1"
+                onClick={() => copyToClipboard(walletAddress)}
+              >
+                <Copy className="w-3 h-3 sm:w-4 sm:h-4" />
+              </Button>
+            )}
+          </div>
 
           {isWalletConnected && (
-            <Badge
-              variant="secondary"
-              className="bg-green-500/20 text-green-300 border-green-500/30"
-            >
-              <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse" />
-              Connected
-            </Badge>
+            <div className="flex items-center bg-green-500/20 border border-green-500/30 text-green-300 rounded-full px-2 py-0.5">
+              <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-400 rounded-full mr-1 sm:mr-1.5 animate-pulse" />
+              <span className="text-[10px] sm:text-xs font-medium">
+                Connected
+              </span>
+            </div>
           )}
         </div>
       </div>

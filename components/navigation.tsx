@@ -42,15 +42,12 @@ export default function Navigation() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [activeModal, setActiveModal] = useState<string | null>(null);
-  const { walletAddress, tokenBalances, loadingTokens } = useWallet();
+  const { walletAddress, tokenBalances, loadingTokens, refreshTokenBalances } =
+    useWallet();
 
-  const plioBalance =
-    (walletAddress &&
-      tokenBalances.find((token) => token.mint === PLIO_TOKEN_MINT)
-        ?.uiAmount) ||
-    null;
-
-  const hasEnoughPlio = plioBalance !== null && plioBalance >= MIN_PLIO_BALANCE;
+  useEffect(() => {
+    refreshTokenBalances();
+  }, []);
 
   // Listen for tool selection events from the dashboard
   useEffect(() => {
@@ -75,26 +72,42 @@ export default function Navigation() {
   }, []); // Stable due to handleMenuItemClick being memoized
 
   const handleMenuItemClick = useCallback(
-    (action: string) => {
-      // Close mobile menu
+    async (action: string) => {
       setIsOpen(false);
 
-      // Check balance for premium features
+      if (!walletAddress) {
+        setActiveModal("WalletNotConnectedNotification");
+        return;
+      }
+
+      // Refresh balances before checking
+      if (["analytics", "images"].includes(action)) {
+        await refreshTokenBalances(); // Ensure we have latest balances
+      }
+
+      const updatedPlioBalance =
+        (walletAddress &&
+          tokenBalances.find((token) => token.mint === PLIO_TOKEN_MINT)
+            ?.uiAmount) ||
+        null;
+
+      const hasEnough =
+        updatedPlioBalance !== null && updatedPlioBalance >= MIN_PLIO_BALANCE;
+
       if (["analytics", "images"].includes(action)) {
         if (loadingTokens) {
           toast.info("Please wait, loading token balances...");
           return;
         }
-        if (!hasEnoughPlio) {
-          setActiveModal("notification");
+        if (!hasEnough) {
+          setActiveModal("PlioBalanceNotification");
           return;
         }
       }
 
-      // Open the selected modal
       setActiveModal(action);
     },
-    [hasEnoughPlio, loadingTokens]
+    [walletAddress, tokenBalances, loadingTokens, refreshTokenBalances]
   );
 
   // Handle Escape key to close mobile menu
@@ -203,10 +216,18 @@ export default function Navigation() {
       )}
 
       {/* Modals */}
-      {activeModal === "notification" && (
+      {activeModal === "PlioBalanceNotification" && (
         <Notification
           title="Insufficient $Plio Balance"
           message={`You need at least ${MIN_PLIO_BALANCE.toLocaleString()} $Plio to access this feature.`}
+          type="error"
+          onClose={() => setActiveModal(null)}
+        />
+      )}
+      {activeModal === "WalletNotConnectedNotification" && (
+        <Notification
+          title="Wallet not connected"
+          message={`Please connect your wallet using browser extension.`}
           type="error"
           onClose={() => setActiveModal(null)}
         />
