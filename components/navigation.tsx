@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import {
   Gamepad2,
@@ -22,28 +22,35 @@ import CryptoMarket from "./crypto-market";
 import AnalyticsDashboard from "./analytics-dashboard";
 import ImageGenerator from "./image-generator";
 import Notification from "./notification";
+import { useWallet } from "@/contexts/WalletContext";
+import { toast } from "react-toastify";
 
 const menuItems = [
-  { icon: Gamepad2, label: "Games", href: "#", action: "games" },
-  { icon: Film, label: "Movies", href: "#", action: "movies" },
-  { icon: BarChart3, label: "Analytics", href: "#", action: "analytics" },
-  { icon: ImageIcon, label: "Images", href: "#", action: "images" },
-  { icon: Map, label: "Roadmap", href: "#", action: "roadmap" },
-  { icon: Bot, label: "PlioBot", href: "#", action: "chat" },
-  { icon: TrendingUp, label: "Crypto Market", href: "#", action: "market" },
+  { icon: Gamepad2, label: "Games", action: "games" },
+  { icon: Film, label: "Movies", action: "movies" },
+  { icon: BarChart3, label: "Analytics", action: "analytics" },
+  { icon: ImageIcon, label: "Images", action: "images" },
+  { icon: Map, label: "Roadmap", action: "roadmap" },
+  { icon: Bot, label: "PlioBot", action: "chat" },
+  { icon: TrendingUp, label: "Crypto Market", action: "market" },
 ];
+
+const PLIO_TOKEN_MINT = "2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump";
+const MIN_PLIO_BALANCE = 50000;
 
 export default function Navigation() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-  const [showGameSearch, setShowGameSearch] = useState(false);
-  const [showMovieSearch, setShowMovieSearch] = useState(false);
-  const [showRoadmap, setShowRoadmap] = useState(false);
-  const [showChat, setShowChat] = useState(false);
-  const [showMarket, setShowMarket] = useState(false);
-  const [showAnalytics, setShowAnalytics] = useState(false);
-  const [showImageGenerator, setShowImageGenerator] = useState(false);
-  const [showNotification, setShowNotification] = useState(false);
+  const [activeModal, setActiveModal] = useState<string | null>(null);
+  const { walletAddress, tokenBalances, loadingTokens } = useWallet();
+
+  const plioBalance =
+    (walletAddress &&
+      tokenBalances.find((token) => token.mint === PLIO_TOKEN_MINT)
+        ?.uiAmount) ||
+    null;
+
+  const hasEnoughPlio = plioBalance !== null && plioBalance >= MIN_PLIO_BALANCE;
 
   // Listen for tool selection events from the dashboard
   useEffect(() => {
@@ -65,43 +72,57 @@ export default function Navigation() {
         handleToolSelected as EventListener
       );
     };
-  }, []);
+  }, []); // Stable due to handleMenuItemClick being memoized
 
-  const handleMenuItemClick = (action: string) => {
-    switch (action) {
-      case "games":
-        setShowGameSearch(true);
-        break;
-      case "movies":
-        setShowMovieSearch(true);
-        break;
-      case "analytics":
-        setShowAnalytics(true);
-        break;
-      case "images":
-        setShowImageGenerator(true);
-        break;
-      case "roadmap":
-        setShowRoadmap(true);
-        break;
-      case "chat":
-        setShowChat(true);
-        break;
-      case "market":
-        setShowMarket(true);
-        break;
-      default:
-        setShowNotification(true);
-        break;
-    }
-  };
+  const handleMenuItemClick = useCallback(
+    (action: string) => {
+      // Close mobile menu
+      setIsOpen(false);
+
+      // Check balance for premium features
+      if (["analytics", "images"].includes(action)) {
+        if (loadingTokens) {
+          toast.info("Please wait, loading token balances...");
+          return;
+        }
+        if (!hasEnoughPlio) {
+          setActiveModal("notification");
+          return;
+        }
+      }
+
+      // Open the selected modal
+      setActiveModal(action);
+    },
+    [hasEnoughPlio, loadingTokens]
+  );
+
+  // Handle Escape key to close mobile menu
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsOpen(false);
+        setActiveModal(null);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   return (
     <>
       {/* Desktop Sidebar */}
-      <nav className="hidden lg:flex fixed left-0 top-0 h-[200vh] bg-white/20 w-20 flex-col items-center py-6 z-40 border-r-2 border-white/20">
+      <nav
+        className="hidden lg:flex fixed left-0 top-0 h-[200vh] bg-white/20 w-20 flex-col items-center py-6 z-40 border-r-2 border-white/20"
+        role="navigation"
+        aria-label="Main navigation"
+      >
         {/* Logo */}
-        <div className="mb-8 cursor-pointer" onClick={() => router.push("/")}>
+        <div
+          className="mb-8 cursor-pointer"
+          onClick={() => router.push("/")}
+          aria-label="Go to homepage"
+        >
           <div className="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center hover:opacity-80 transition-opacity mb-10">
             <img
               src="/plio_logo.jpg"
@@ -113,20 +134,14 @@ export default function Navigation() {
         {/* Menu Items */}
         <div className="flex flex-col space-y-4">
           {menuItems.map((item, index) => (
-            <a
+            <button
               key={index}
-              href={item.href}
               className="w-12 h-12 flex items-center justify-center rounded-xl transition-all duration-300 hover:bg-gray-800/80 hover:shadow-lg hover:shadow-purple-500/10 group transform hover:-translate-y-0.5 active:translate-y-0 active:scale-95"
-              title={item.label}
-              onClick={(e) => {
-                if (item.action) {
-                  e.preventDefault();
-                  handleMenuItemClick(item.action);
-                }
-              }}
+              aria-label={item.label}
+              onClick={() => handleMenuItemClick(item.action)}
             >
               <item.icon className="text-white w-5 h-5 group-hover:text-white transition-colors" />
-            </a>
+            </button>
           ))}
         </div>
       </nav>
@@ -137,6 +152,7 @@ export default function Navigation() {
         size="icon"
         className="lg:hidden fixed top-0 left-0 bg-gray-900/80 backdrop-blur-sm border border-gray-700 hover:bg-gray-800 z-50"
         onClick={() => setIsOpen(!isOpen)}
+        aria-label={isOpen ? "Close menu" : "Open menu"}
       >
         {isOpen ? (
           <X className="h-6 w-6 text-white" />
@@ -150,6 +166,8 @@ export default function Navigation() {
         <div
           className="lg:hidden fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
           onClick={() => setIsOpen(false)}
+          role="dialog"
+          aria-label="Mobile navigation menu"
         >
           <nav className="fixed left-0 top-0 h-full w-64 bg-gray-900/95 backdrop-blur-sm border-r border-gray-800 p-6">
             {/* Logo */}
@@ -169,64 +187,50 @@ export default function Navigation() {
             {/* Menu Items */}
             <div className="space-y-2">
               {menuItems.map((item, index) => (
-                <a
+                <button
                   key={index}
-                  href={item.href}
-                  className="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 hover:bg-gray-800/80 hover:shadow-lg hover:shadow-purple-500/10 transform hover:-translate-x-1 active:translate-x-0 active:scale-[0.98]"
-                  onClick={(e) => {
-                    if (item.action) {
-                      e.preventDefault();
-                      handleMenuItemClick(item.action);
-                      setIsOpen(false);
-                    }
-                  }}
+                  className="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 hover:bg-gray-800/80 hover:shadow-lg hover:shadow-purple-500/10 transform hover:-translate-x-1 active:translate-x-0 active:scale-[0.98] w-full text-left"
+                  onClick={() => handleMenuItemClick(item.action)}
+                  aria-label={item.label}
                 >
                   <item.icon className="w-5 h-5 text-gray-400" />
                   <span className="text-gray-300">{item.label}</span>
-                </a>
+                </button>
               ))}
             </div>
           </nav>
         </div>
       )}
 
-      {/* Error Notification */}
-      {showNotification && (
+      {/* Modals */}
+      {activeModal === "notification" && (
         <Notification
-          title="Premium Feature"
-          message="This feature is only available for premium users."
-          type="info"
-          onClose={() => setShowNotification(false)}
+          title="Insufficient $Plio Balance"
+          message={`You need at least ${MIN_PLIO_BALANCE.toLocaleString()} $Plio to access this feature.`}
+          type="error"
+          onClose={() => setActiveModal(null)}
         />
       )}
-
-      {/* Torrent Game Search Modal */}
-      {showGameSearch && (
-        <TorrentGameSearch onClose={() => setShowGameSearch(false)} />
+      {activeModal === "games" && (
+        <TorrentGameSearch onClose={() => setActiveModal(null)} />
       )}
-
-      {/* Torrent Movie Search Modal */}
-      {showMovieSearch && (
-        <TorrentMovieSearch onClose={() => setShowMovieSearch(false)} />
+      {activeModal === "movies" && (
+        <TorrentMovieSearch onClose={() => setActiveModal(null)} />
       )}
-
-      {/* Project Roadmap Modal */}
-      {showRoadmap && <ProjectRoadmap onClose={() => setShowRoadmap(false)} />}
-
-      {/* PlioBot Chat Modal */}
-      {showChat && <PlioBot onClose={() => setShowChat(false)} />}
-
-      {/* Crypto Market Modal */}
-      {showMarket && <CryptoMarket onClose={() => setShowMarket(false)} />}
-
-      {/* Analytics Dashboard Modal */}
-      {showAnalytics && (
-        <AnalyticsDashboard onClose={() => setShowAnalytics(false)} />
+      {activeModal === "roadmap" && (
+        <ProjectRoadmap onClose={() => setActiveModal(null)} />
       )}
-
-      {/* Image Generator Modal */}
-      {showImageGenerator && (
-        <ImageGenerator onClose={() => setShowImageGenerator(false)} />
+      {activeModal === "chat" && (
+        <PlioBot onClose={() => setActiveModal(null)} />
+      )}
+      {activeModal === "market" && (
+        <CryptoMarket onClose={() => setActiveModal(null)} />
+      )}
+      {activeModal === "analytics" && (
+        <AnalyticsDashboard onClose={() => setActiveModal(null)} />
+      )}
+      {activeModal === "images" && (
+        <ImageGenerator onClose={() => setActiveModal(null)} />
       )}
     </>
   );
