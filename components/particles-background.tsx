@@ -1,18 +1,21 @@
-"use client"
+"use client";
 
-import { useCallback } from "react"
-import Particles from "react-tsparticles"
-import { loadSlim } from "tsparticles-slim"
-import type { Container, Engine } from "tsparticles-engine"
+import { useCallback } from "react";
+import Particles from "react-tsparticles";
+import { loadSlim } from "tsparticles-slim";
+import type { Container, Engine } from "tsparticles-engine";
 
 export default function ParticlesBackground() {
   const particlesInit = useCallback(async (engine: Engine) => {
-    await loadSlim(engine)
-  }, [])
+    await loadSlim(engine);
+  }, []);
 
-  const particlesLoaded = useCallback(async (container: Container | undefined) => {
-    // Particles loaded callback
-  }, [])
+  const particlesLoaded = useCallback(
+    async (container: Container | undefined) => {
+      // Particles loaded callback
+    },
+    []
+  );
 
   return (
     <Particles
@@ -50,10 +53,10 @@ export default function ParticlesBackground() {
         },
         particles: {
           color: {
-            value: "#ffffff",
+            value: "#000",
           },
           links: {
-            color: "#ffffff",
+            color: "#000",
             distance: 150,
             enable: true,
             opacity: 0.2,
@@ -90,5 +93,5 @@ export default function ParticlesBackground() {
       }}
       className="absolute inset-0 z-0"
     />
-  )
+  );
 }

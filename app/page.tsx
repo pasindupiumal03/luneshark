@@ -68,50 +68,47 @@ export default function HomePage() {
     // You can add a toast notification here if you want
   };
 
-  // Check if user has enough $LUNESHARK for premium features
-  const hasEnoughPlio = plioBalance !== null && plioBalance >= 50000;
-
   return (
     <div className="min-h-screen relative overflow-hidden">
       {/* Background with off-white gradient */}
       <Navigation />
       <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-slate-50 to-gray-100">
         {/* Subtle geometric pattern */}
-        <div className="absolute inset-0 opacity-50">
-          <svg className="w-full h-full" viewBox="0 0 1200 800">
+        <div className="absolute inset-10 opacity-20">
+          <svg className="w-full h-full" viewBox="0 0 1400 800">
             <defs>
               <pattern
                 id="network"
                 x="0"
                 y="0"
-                width="60"
-                height="60"
+                width="100"
+                height="100"
                 patternUnits="userSpaceOnUse"
               >
-                <circle cx="30" cy="30" r="1.5" fill="rgba(100,116,139,0.4)" />
+                <circle cx="50" cy="50" r="2" fill="rgba(71,85,105,0.6)" />
                 <line
-                  x1="30"
-                  y1="30"
-                  x2="60"
+                  x1="50"
+                  y1="50"
+                  x2="100"
                   y2="0"
-                  stroke="rgba(100,116,139,0.2)"
-                  strokeWidth="0.5"
+                  stroke="rgba(71,85,105,0.4)"
+                  strokeWidth="1"
                 />
                 <line
-                  x1="30"
-                  y1="30"
-                  x2="60"
-                  y2="60"
-                  stroke="rgba(100,116,139,0.2)"
-                  strokeWidth="0.5"
+                  x1="50"
+                  y1="50"
+                  x2="100"
+                  y2="100"
+                  stroke="rgba(71,85,105,0.4)"
+                  strokeWidth="1"
                 />
                 <line
-                  x1="30"
-                  y1="30"
+                  x1="50"
+                  y1="50"
                   x2="0"
-                  y2="60"
-                  stroke="rgba(100,116,139,0.2)"
-                  strokeWidth="0.5"
+                  y2="100"
+                  stroke="rgba(71,85,105,0.4)"
+                  strokeWidth="1"
                 />
               </pattern>
             </defs>
@@ -142,23 +139,40 @@ export default function HomePage() {
       {/* Navigation */}
       <div className="fixed top-0 right-0 w-fit p-2 z-50">
         <div className="flex flex-col sm:flex-row items-end sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
-          <div className="flex items-center space-x-1 bg-white/80 border border-gray-200 text-gray-700 rounded-lg px-2 py-1 sm:px-3 sm:py-1.5 transition-colors duration-200 backdrop-blur-md shadow-sm">
-            <Wallet className="w-3 h-3 sm:w-4 sm:h-4" />
+          <div
+            className={`flex items-center space-x-1 rounded-lg px-2 py-1 sm:px-3 sm:py-1.5 transition-colors duration-200 backdrop-blur-md shadow-sm${
+              isWalletConnected
+                ? "bg-white/80 border border-gray-200 text-gray-700"
+                : ""
+            }`}
+          >
+            {isWalletConnected && <Wallet className="w-3 h-3 sm:w-4 sm:h-4" />}
             <span className="text-xs sm:text-sm font-medium">
-              {connecting
-                ? "Connecting..."
-                : isWalletConnected
-                ? `${walletAddress.slice(0, 4)}...${walletAddress.slice(-4)}`
-                : "Connect Wallet"}
+              {connecting ? (
+                "Connecting..."
+              ) : isWalletConnected ? (
+                `${walletAddress.slice(0, 4)}...${walletAddress.slice(-4)}`
+              ) : (
+                <Button
+                  size="lg"
+                  variant="outline"
+                  onClick={handleConnectWallet}
+                  disabled={connecting}
+                  className="bg-white/80 text-gray-700 hover:bg-white shadow-sm hover:shadow-md font-semibold px-6 py-2 text-sm sm:text-base transition-colors duration-200 "
+                >
+                  <Wallet className="w-5 h-5 mr-2" />
+                  Connect Wallet
+                </Button>
+              )}
             </span>
             {isWalletConnected && (
               <Button
                 size="icon"
                 variant="ghost"
-                className="bg-gray-100 hover:bg-gray-200 text-gray-600 p-1 rounded-md"
+                className="p-1 bg-gray-100 hover:bg-gray-200 active:text-white text-gray-600 rounded-md"
                 onClick={() => copyToClipboard(walletAddress)}
               >
-                <Copy className="w-3 h-3 sm:w-4 sm:h-4" />
+                <Copy className="w-4 h-4" />
               </Button>
             )}
           </div>

@@ -191,6 +191,11 @@ export default function Navigation() {
         >
           <nav className="fixed left-0 top-0 h-full w-64 bg-white/95 backdrop-blur-md border-r border-gray-200 p-6 shadow-xl">
             {/* Logo */}
+            <div
+              className="mb-8 cursor-pointer"
+              onClick={() => router.push("/")}
+              aria-label="Go to homepage"
+            ></div>
             <div className="mb-8 mt-12">
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 rounded-lg overflow-hidden border border-gray-200 shadow-sm">
@@ -200,7 +205,9 @@ export default function Navigation() {
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <span className="text-gray-800 font-bold text-xl">Plio</span>
+                <span className="text-gray-800 font-bold text-xl">
+                  Luneshark
+                </span>
               </div>
             </div>
 

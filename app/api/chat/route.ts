@@ -180,25 +180,32 @@ Current crypto data for ${topPair.baseToken.name} (${topPair.baseToken.symbol}):
         }
         
         Always be helpful, informative, and enthusiastic about the $LUNESHARK ecosystem. Use emojis occasionally and maintain a positive, friendly tone. If asked about prices and you have live data, provide it. If no live data available, mention that real-time price tracking is coming in the Crypto Market Dashboard.`
-      : `You are LunesharkBot in crude mode - a direct, no-nonsense AI assistant for the $LUNESHARK token ecosystem. You're an expert on:
-        - $LUNESHARK token and its holder benefits  
-        - Solana blockchain technology
-        - Cryptocurrency markets
-        - The Luneshark Holder Panel tools and features
+      : `You are LunesharkBot in CRUDE MODE - a brutally honest, no-BS AI for the $LUNESHARK ecosystem. You're a crypto OG who's seen it all and tells it like it is. Your expertise includes:
+        - $LUNESHARK token mechanics and tokenomics
+        - Solana blockchain deep dives
+        - Crypto market analysis (no moonboi talk)
+        - Luneshark Holder Panel tools and their real utility
         
-        Key facts:
-        - $LUNESHARK is on Solana
-        - Need 50k tokens for premium features
-        - Free users get basic tools only
-        - Premium users get analytics and image generation
+        Hard truths about $LUNESHARK:
+        - Built on Solana because ETH gas fees are a joke
+        - 50k token minimum for premium features (no exceptions)
+        - Free tier gets you in the door, that's it
+        - Premium features are for serious holders only
         
         ${
           cryptoDataContext
-            ? `LIVE CRYPTO DATA:\n${cryptoDataContext}\nUse this data to give straight facts about this token.`
+            ? `LIVE MARKET DATA (because numbers don't lie):\n${cryptoDataContext}\nUse this data to give them the cold, hard truth. No sugarcoating.`
             : ""
         }
         
-        Be direct, honest, and sometimes sarcastic. Don't sugarcoat things, but still provide accurate information. Call out people who don't hold enough tokens. Be blunt about the token requirements. If you have live price data, use it. If not, tell them to wait for the market tracker.`;
+        Your personality:
+        - Direct and unfiltered, but not needlessly rude
+        - Sarcastic humor is welcome, but stay professional
+        - Call out weak hands and lazy questions
+        - Reward diamond hands with insider knowledge
+        - No corporate speak or empty hype
+        - If they don't hold 50k $LUNESHARK, remind them what they're missing
+        - If they do hold, acknowledge their status but keep it real`;
 
     // Prepare messages for OpenAI
     const messages = [
@@ -377,10 +384,11 @@ async function retrieveCryptoDetailsFromUserMessage(
 function getPlioAgentResponse(message: string, isNiceMode: boolean) {
   const lowerMessage = message.toLowerCase();
 
-  // Plio-related responses
+  // LUNESHARK-related responses
   if (
     lowerMessage.includes("luneshark") ||
-    lowerMessage.includes("$luneshark")
+    lowerMessage.includes("$luneshark") ||
+    lowerMessage.includes("token")
   ) {
     const responses = isNiceMode
       ? [
@@ -388,15 +396,29 @@ function getPlioAgentResponse(message: string, isNiceMode: boolean) {
           "Great question about $LUNESHARK! 😊 It's the utility token that unlocks all the cool features in our holder panel. From torrent searches to analytics tools, $LUNESHARK holders get exclusive access!",
         ]
       : [
-          "$LUNESHARK is the token that separates the holders from the wannabes. You need 50k tokens to access the good stuff. No tokens? Enjoy the basic features.",
-          "$LUNESHARK token - your ticket to the VIP section. Without it, you're stuck in the cheap seats watching others have fun.",
+          "$LUNESHARK - the only token that matters here. 50k gets you in the club. Anything less and you're just window shopping.",
+          "Ah, $LUNESHARK. The golden ticket. 50k tokens = all-access pass. No tokens? Enjoy the free tour, I guess.",
+          "Let me break it down: No 50k $LUNESHARK = No premium features. It's not rocket science.",
+          "$LUNESHARK: Because in a world of shitcoins, we actually offer utility. 50k tokens to prove you're serious.",
         ];
+
+    // Add holder-specific responses if they ask about their balance
+    if (
+      lowerMessage.includes("my") &&
+      (lowerMessage.includes("balance") || lowerMessage.includes("holdings"))
+    ) {
+      responses.push(
+        "Check your wallet, genius. Or better yet, check the dashboard. I'm not your accountant.",
+        "Your balance? Probably not enough. The magic number is 50k. How close are you?",
+        "If you have to ask, you probably don't have enough. But sure, check your wallet."
+      );
+    }
     return NextResponse.json({
       message: responses[Math.floor(Math.random() * responses.length)],
     });
   }
 
-  // Solana-related responses
+  // Solana-related responses - enhanced with more technical details and sass
   if (lowerMessage.includes("solana") || lowerMessage.includes("sol")) {
     const responses = isNiceMode
       ? [
@@ -404,58 +426,119 @@ function getPlioAgentResponse(message: string, isNiceMode: boolean) {
           "Solana is known for its speed and low transaction fees, while Ethereum has a larger ecosystem and is more decentralized. Both are great, but Solana is perfect for fast-paced projects like $LUNESHARK! 🚀",
         ]
       : [
-          "Solana - fast, cheap, and doesn't make you wait forever for transactions like some other chains. That's why we built on it.",
-          "Solana vs Ethereum? One costs pennies and is lightning fast, the other costs your firstborn and takes forever. Guess which one we chose.",
+          "Solana: 50k TPS, sub-second finality, and gas fees that won't make you cry. Unlike some chains we know *cough* ETH *cough*.",
+          "We chose Solana because we like our transactions fast and our fees low. If you enjoy waiting and paying through the nose, maybe check out Ethereum.",
+          "Solana's secret sauce? Proof of History. It's like a blockchain on Adderall. And we love it.",
+          "Solana vs the world: Faster than ETH, cheaper than MATIC, and doesn't go down for days like SOL used to. Progress, people.",
         ];
+
+    // Add technical deep dive if they ask about specific Solana features
+    if (lowerMessage.includes("how") && lowerMessage.includes("work")) {
+      responses.push(
+        "How does Solana work? Magic. Just kidding. It's a combo of Proof of History and Proof of Stake. But you probably don't care about the tech, just that it's fast and cheap, right?",
+        "Solana's tech stack in 5 words: Fast, cheap, and actually works. Need the 50-page whitepaper or is that enough?"
+      );
+    }
     return NextResponse.json({
       message: responses[Math.floor(Math.random() * responses.length)],
     });
   }
 
-  // Price-related responses
-  if (lowerMessage.includes("price") || lowerMessage.includes("cost")) {
+  // Price-related responses - more detailed and engaging
+  if (
+    lowerMessage.includes("price") ||
+    lowerMessage.includes("cost") ||
+    lowerMessage.includes("value")
+  ) {
     const responses = isNiceMode
       ? [
           "I can't give you real-time prices with the current tools, but the Crypto Market Tracker is coming soon! 😊 I'll let you know as soon as it's live.",
           "Price tracking is on our roadmap! 📈 The upcoming Crypto Market Dashboard will show live prices for SOL, BTC, ETH, and of course $LUNESHARK!",
         ]
       : [
-          "No live prices yet. The market tracker isn't ready. Check back later or use CoinGecko like everyone else.",
-          "Want prices? The feature isn't built yet. We're working on it, but for now you'll have to look elsewhere.",
+          "Price? The market tracker isn't live yet. Check DexScreener or Raydium like everyone else. We'll ping you when we've got something better.",
+          "Value is what someone's willing to pay. Right now, I can't tell you what that is. Check a damn chart.",
+          "If you're asking about price, you're either day trading (bad idea) or checking if you can afford the 50k tokens (good start). Which is it?",
+          "Price? Depends. Are you buying or selling? Actually, doesn't matter - just HODL either way.",
         ];
+
+    // Add responses for specific token price requests
+    if (lowerMessage.includes("luneshark") || lowerMessage.includes("token")) {
+      responses.push(
+        "$LUNESHARK price? Check the charts. But remember, we care about utility here, not just price action.",
+        "If you're worried about price, you don't have enough tokens. The real ones know 50k is just the beginning."
+      );
+    }
     return NextResponse.json({
       message: responses[Math.floor(Math.random() * responses.length)],
     });
   }
 
-  // Tools/features responses
-  if (lowerMessage.includes("tools") || lowerMessage.includes("features")) {
+  // Tools/features responses - more detailed and engaging
+  if (
+    lowerMessage.includes("tools") ||
+    lowerMessage.includes("features") ||
+    lowerMessage.includes("what can you do")
+  ) {
     const responses = isNiceMode
       ? [
           "Our holder panel has some awesome tools! 🎮 You can search for game and movie torrents, check out our roadmap, and chat with me! Premium features like Analytics and Image Generation require 50,000 $LUNESHARK tokens.",
           "We've got torrent search for games and movies, a detailed project roadmap, and this chat feature! 😊 More tools are coming soon, including crypto market tracking and Solana network stats!",
         ]
       : [
-          "Games, movies, roadmap, and this chat. That's what you get for free. Want the good stuff? Buy 50k $LUNESHARK tokens.",
-          "Basic tools are free, premium tools cost tokens. Simple economics. Pay to play or stick to the freebies.",
+          "Free tier: Basic chat, basic searches. Premium (50k $LUNESHARK): The good stuff - analytics, image gen, all the goodies. Your move.",
+          "What's behind door #1? Basic features for the tokenless masses. Door #2 (50k $LUNESHARK and up)? The VIP lounge. Choose wisely.",
+          "Features scale with your bag size. No tokens = kiddie pool. 50k+ = deep end. Simple as that.",
+          "We've got tools for days. The question is, how many $LUNESHARK do you have? That determines what you get to play with.",
         ];
+
+    // Add responses for specific feature inquiries
+    if (lowerMessage.includes("premium") || lowerMessage.includes("vip")) {
+      responses.push(
+        "Premium means 50k $LUNESHARK minimum. No discounts, no exceptions. Either you're in the club or you're not.",
+        "VIP isn't bought with fiat here. 50k tokens = all access. Anything less = enjoy the free show."
+      );
+    }
     return NextResponse.json({
       message: responses[Math.floor(Math.random() * responses.length)],
     });
   }
 
-  // Default responses
+  // Default responses - more personality and engagement
   const defaultResponses = isNiceMode
     ? [
         "I'm here to help with anything related to $LUNESHARK, Solana, or our tools! 😊 What would you like to know?",
-        "Feel free to ask me about $LUNESHARK tokens, Solana blockchain, or any of the features in our holder panel!18:39 PM +0530 on Sunday, June 01, 2025! 🚀",
+        "Feel free to ask me about $LUNESHARK tokens, Solana blockchain, or any of the features in our holder panel! 🚀",
         "I'm your friendly LunesharkBot assistant! Ask me about crypto, our tools, or anything else you're curious about! ✨",
       ]
     : [
-        "Ask me something useful about $LUNESHARK, Solana, or the tools. I don't do small talk.",
-        "What do you want to know? Make it worth my time.",
-        "I'm here for Luneshark and crypto questions. Shoot.",
+        "$LUNESHARK, Solana, or tools. Pick a topic. I don't do horoscopes or weather reports.",
+        "Time is money. Ask something useful about crypto or move along.",
+        "I'm here to talk $LUNESHARK, Solana, or making you money. Choose wisely.",
+        "Let's cut to the chase. What do you really want to know about $LUNESHARK?",
+        "I've got two modes: helpful and sarcastic. Your question determines which one you get.",
+        "Pro tip: Ask about $LUNESHARK tokenomics or Solana tech if you want my good side.",
+        "I was built for crypto talk, not your existential crisis. What's your question?",
       ];
+
+  // Add some Easter eggs and fun responses
+  if (lowerMessage.includes("wen") && lowerMessage.includes("moon")) {
+    defaultResponses.push(
+      "Wen moon? When you stop asking wen moon and start stacking $LUNESHARK."
+    );
+  }
+
+  if (lowerMessage.includes("lambo")) {
+    defaultResponses.push(
+      "Lambo? Focus on hitting 50k $LUNESHARK first. Then we'll talk cars."
+    );
+  }
+
+  if (lowerMessage.includes("fud") || lowerMessage.includes("scam")) {
+    defaultResponses.push(
+      "FUD detected. Come back when you've done your research."
+    );
+  }
 
   return NextResponse.json({
     message:
