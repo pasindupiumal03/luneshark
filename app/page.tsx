@@ -68,50 +68,50 @@ export default function HomePage() {
     // You can add a toast notification here if you want
   };
 
-  // Check if user has enough $Plio for premium features
+  // Check if user has enough $LUNESHARK for premium features
   const hasEnoughPlio = plioBalance !== null && plioBalance >= 50000;
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* Background with off-white color */}
+      {/* Background with off-white gradient */}
       <Navigation />
-      <div className="absolute inset-0 bg-[#f5f1e8]">
-        {/* Network pattern */}
-        <div className="opacity-5">
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-slate-50 to-gray-100">
+        {/* Subtle geometric pattern */}
+        <div className="absolute inset-0 opacity-50">
           <svg className="w-full h-full" viewBox="0 0 1200 800">
             <defs>
               <pattern
                 id="network"
                 x="0"
                 y="0"
-                width="100"
-                height="100"
+                width="60"
+                height="60"
                 patternUnits="userSpaceOnUse"
               >
-                <circle cx="50" cy="50" r="2" fill="#3a4449" />
+                <circle cx="30" cy="30" r="1.5" fill="rgba(100,116,139,0.4)" />
                 <line
-                  x1="50"
-                  y1="50"
-                  x2="100"
+                  x1="30"
+                  y1="30"
+                  x2="60"
                   y2="0"
-                  stroke="#3a4449"
-                  strokeWidth="1"
+                  stroke="rgba(100,116,139,0.2)"
+                  strokeWidth="0.5"
                 />
                 <line
-                  x1="50"
-                  y1="50"
-                  x2="100"
-                  y2="100"
-                  stroke="#3a4449"
-                  strokeWidth="1"
+                  x1="30"
+                  y1="30"
+                  x2="60"
+                  y2="60"
+                  stroke="rgba(100,116,139,0.2)"
+                  strokeWidth="0.5"
                 />
                 <line
-                  x1="50"
-                  y1="50"
+                  x1="30"
+                  y1="30"
                   x2="0"
-                  y2="100"
-                  stroke="#3a4449"
-                  strokeWidth="1"
+                  y2="60"
+                  stroke="rgba(100,116,139,0.2)"
+                  strokeWidth="0.5"
                 />
               </pattern>
             </defs>
@@ -129,18 +129,21 @@ export default function HomePage() {
           {particleStyles.map((style, i) => (
             <div
               key={i}
-              className="absolute w-2 h-2 bg-[#3a4449]/20 rounded-full animate-pulse"
+              className="absolute w-1.5 h-1.5 bg-slate-300/40 rounded-full animate-pulse"
               style={style}
             />
           ))}
         </div>
+
+        {/* Subtle overlay for depth */}
+        <div className="absolute inset-0 bg-gradient-to-t from-white/20 via-transparent to-white/10" />
       </div>
 
       {/* Navigation */}
       <div className="fixed top-0 right-0 w-fit p-2 z-50">
         <div className="flex flex-col sm:flex-row items-end sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
-          <div className="flex items-center space-x-1 bg-[#f5f1e8]/80 border border-[#3a4449]/20 text-[#3a4449] rounded-md px-2 py-1 sm:px-3 sm:py-1.5 transition-colors duration-200 backdrop-blur-sm">
-            <Wallet className="w-3 h-3 sm:w-4 sm:h-4 text-[#3a4449]" />
+          <div className="flex items-center space-x-1 bg-white/80 border border-gray-200 text-gray-700 rounded-lg px-2 py-1 sm:px-3 sm:py-1.5 transition-colors duration-200 backdrop-blur-md shadow-sm">
+            <Wallet className="w-3 h-3 sm:w-4 sm:h-4" />
             <span className="text-xs sm:text-sm font-medium">
               {connecting
                 ? "Connecting..."
@@ -152,7 +155,7 @@ export default function HomePage() {
               <Button
                 size="icon"
                 variant="ghost"
-                className="bg-[#f5f1e8]/80 hover:bg-[#3a4449]/10 active:text-[#3a4449] text-[#3a4449] p-1"
+                className="bg-gray-100 hover:bg-gray-200 text-gray-600 p-1 rounded-md"
                 onClick={() => copyToClipboard(walletAddress)}
               >
                 <Copy className="w-3 h-3 sm:w-4 sm:h-4" />
@@ -161,8 +164,8 @@ export default function HomePage() {
           </div>
 
           {isWalletConnected && (
-            <div className="flex items-center bg-[#5a6e73]/20 border border-[#5a6e73]/30 text-[#5a6e73] rounded-full px-2 py-0.5">
-              <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-[#5a6e73] rounded-full mr-1 sm:mr-1.5 animate-pulse" />
+            <div className="flex items-center bg-emerald-100 border border-emerald-200 text-emerald-700 rounded-full px-2 py-0.5">
+              <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-emerald-500 rounded-full mr-1 sm:mr-1.5 animate-pulse" />
               <span className="text-[10px] sm:text-xs font-medium">
                 Connected
               </span>
@@ -179,8 +182,8 @@ export default function HomePage() {
             <div className="w-24 h-24 flex items-center justify-center mx-auto mb-6">
               <img
                 src="/luneshark_logo.png"
-                alt="Plio Logo"
-                className="w-full h-full object-cover rounded-3xl shadow-2xl shadow-[#3a4449]/25"
+                alt="Luneshark Logo"
+                className="w-full h-full object-cover rounded-3xl shadow-xl border border-gray-200"
               />
             </div>
 
@@ -189,10 +192,10 @@ export default function HomePage() {
               <Button
                 size="icon"
                 variant="ghost"
-                className="bg-[#f5f1e8]/80 hover:bg-[#3a4449]/10 text-[#3a4449] backdrop-blur-sm"
+                className="bg-white/80 hover:bg-white border border-gray-200 text-gray-700 backdrop-blur-md shadow-sm hover:shadow-md transition-all duration-200"
                 onClick={() =>
                   window.open(
-                    "https://x.com/PlioSol",
+                    "https://x.com/Luneshark",
                     "_blank",
                     "noopener,noreferrer"
                   )
@@ -207,10 +210,10 @@ export default function HomePage() {
               <Button
                 size="icon"
                 variant="ghost"
-                className="bg-[#f5f1e8]/80 hover:bg-[#3a4449]/10 text-[#3a4449] backdrop-blur-sm"
+                className="bg-white/80 hover:bg-white border border-gray-200 text-gray-700 backdrop-blur-md shadow-sm hover:shadow-md transition-all duration-200"
                 onClick={() =>
                   window.open(
-                    "https://telegram.org/PlioSol",
+                    "https://telegram.org/Luneshark",
                     "_blank",
                     "noopener,noreferrer"
                   )
@@ -225,7 +228,7 @@ export default function HomePage() {
               <Button
                 size="icon"
                 variant="ghost"
-                className="bg-[#f5f1e8]/80 hover:bg-[#3a4449]/10 text-[#3a4449] backdrop-blur-sm"
+                className="bg-white/80 hover:bg-white border border-gray-200 text-gray-700 backdrop-blur-md shadow-sm hover:shadow-md transition-all duration-200"
                 onClick={() =>
                   window.open(
                     "https://pump.fun/coin/2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump",
@@ -243,7 +246,7 @@ export default function HomePage() {
               <Button
                 size="icon"
                 variant="ghost"
-                className="bg-[#f5f1e8]/80 hover:bg-[#3a4449]/10 text-[#3a4449] backdrop-blur-sm p-2"
+                className="bg-white/80 hover:bg-white border border-gray-200 text-gray-700 backdrop-blur-md shadow-sm hover:shadow-md transition-all duration-200 p-2"
                 onClick={() =>
                   window.open(
                     "https://dexscreener.com/solana/2cgwesvhz9gftdyqvbcje7lwvyoxk7oj35qega56vjfy",
@@ -262,13 +265,13 @@ export default function HomePage() {
           </div>
 
           <div className="mb-6 lg:mb-8 flex items-center justify-center gap-2">
-            <p className="text-xs sm:text-sm font-mono break-all px-4 py-2 bg-[#f5f1e8]/80 rounded-lg text-[#3a4449]">
+            <p className="text-xs sm:text-sm font-mono break-all px-4 py-2 bg-white/80 rounded-lg border border-gray-200 text-gray-600 shadow-sm">
               2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump
             </p>
             <Button
               size="icon"
               variant="ghost"
-              className="bg-[#f5f1e8]/80 hover:bg-[#3a4449]/10 active:text-[#3a4449] text-[#3a4449]"
+              className="bg-white/80 hover:bg-white border border-gray-200 text-gray-600 shadow-sm hover:shadow-md transition-all duration-200"
               onClick={() =>
                 copyToClipboard("2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump")
               }
@@ -279,13 +282,15 @@ export default function HomePage() {
 
           {/* Main Heading */}
           <div className="relative mb-8">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight text-[#3a4449]">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight">
               <span className="relative">
-                <span className="bg-gradient-to-r from-[#5a6e73] to-[#3a4449] bg-clip-text text-transparent font-extrabold">
-                  $Luneshark
+                <span className="bg-gradient-to-r from-amber-600 via-orange-500 to-red-500 bg-clip-text text-transparent font-extrabold">
+                  $LUNESHARK
                 </span>
-                <span className="mx-3 text-[#3a4449]">Holder</span>
-                <span className="bg-gradient-to-r from-[#3a4449] to-[#5a6e73] bg-clip-text text-transparent font-extrabold">
+                <span className="mx-3 bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
+                  Holder
+                </span>
+                <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent font-extrabold">
                   Panel
                 </span>
               </span>
@@ -297,7 +302,7 @@ export default function HomePage() {
             <Button
               onClick={() => router.push("/dashboard")}
               size="lg"
-              className="bg-[#5a6e73] hover:bg-[#3a4449] text-[#f5f1e8] font-semibold px-8 py-6 text-lg shadow-2xl shadow-[#3a4449]/25 transition-all duration-300 hover:scale-105"
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border-0"
             >
               <Rocket className="w-6 h-6 mr-3" />
               Launch Luneshark
@@ -309,7 +314,7 @@ export default function HomePage() {
               variant="outline"
               onClick={handleConnectWallet}
               disabled={connecting}
-              className="bg-[#f5f1e8]/80 border-[#3a4449]/30 text-[#3a4449] hover:bg-[#3a4449]/10 font-semibold px-8 py-6 text-lg backdrop-blur-sm transition-all duration-300 hover:scale-105 disabled:opacity-50"
+              className="bg-white/80 border-gray-300 text-gray-700 hover:bg-white hover:border-gray-400 font-semibold px-8 py-6 text-lg backdrop-blur-md transition-all duration-300 hover:scale-105 disabled:opacity-50 shadow-sm hover:shadow-md"
             >
               <Wallet className="w-6 h-6 mr-3" />
               {connecting
@@ -321,22 +326,22 @@ export default function HomePage() {
           </div>
 
           {/* Description */}
-          <div className="space-y-4 text-[#3a4449] max-w-2xl mx-auto">
+          <div className="space-y-4 text-gray-700 max-w-2xl mx-auto">
             <p className="text-xl font-medium flex items-center justify-center">
-              <Sparkles className="w-5 h-5 mr-2 text-[#5a6e73]" />
+              <Sparkles className="w-5 h-5 mr-2 text-amber-500" />
               Access exclusive holder tools
             </p>
 
-            <div className="bg-[#f5f1e8]/80 backdrop-blur-sm rounded-2xl p-6 border border-[#3a4449]/20">
-              <p className="text-lg mb-3 flex items-center justify-center">
-                <Shield className="w-5 h-5 mr-2 text-[#5a6e73]" />
+            <div className="bg-white/80 backdrop-blur-md rounded-2xl p-6 border border-gray-200 shadow-lg">
+              <p className="text-lg mb-3 flex items-center justify-center text-gray-800">
+                <Shield className="w-5 h-5 mr-2 text-emerald-500" />
                 <span className="font-semibold">Current Requirement:</span>
               </p>
-              <Badge className="ml-2 mb-4 bg-[#5a6e73] text-[#f5f1e8] font-bold">
-                50,000 $Luneshark
+              <Badge className="ml-2 mb-4 bg-gradient-to-r from-amber-400 to-orange-500 text-white font-bold shadow-sm">
+                50,000 $LUNESHARK
               </Badge>
 
-              <p className="text-base text-[#3a4449]/80 leading-relaxed text-center">
+              <p className="text-base text-gray-600 leading-relaxed text-center">
                 Connect your wallet to view token details and access exclusive
                 holder tools.
               </p>
@@ -346,32 +351,32 @@ export default function HomePage() {
           {/* Features Grid */}
           {isWalletConnected && (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12 max-w-4xl mx-auto">
-              <Card className="bg-[#f5f1e8]/80 border-[#3a4449]/20 backdrop-blur-sm p-6 hover:bg-[#3a4449]/10 transition-all duration-300">
-                <TrendingUp className="w-8 h-8 text-[#5a6e73] mb-4 mx-auto" />
-                <h3 className="text-[#3a4449] font-semibold mb-2">
+              <Card className="bg-white/80 border-gray-200 backdrop-blur-md p-6 hover:bg-white hover:shadow-lg transition-all duration-300 shadow-sm">
+                <TrendingUp className="w-8 h-8 text-emerald-500 mb-4 mx-auto" />
+                <h3 className="text-gray-800 font-semibold mb-2">
                   Real-time Analytics
                 </h3>
-                <p className="text-[#3a4449]/70 text-sm">
+                <p className="text-gray-600 text-sm">
                   Track your holdings and market performance
                 </p>
               </Card>
 
-              <Card className="bg-[#f5f1e8]/80 border-[#3a4449]/20 backdrop-blur-sm p-6 hover:bg-[#3a4449]/10 transition-all duration-300">
-                <Shield className="w-8 h-8 text-[#5a6e73] mb-4 mx-auto" />
-                <h3 className="text-[#3a4449] font-semibold mb-2">
+              <Card className="bg-white/80 border-gray-200 backdrop-blur-md p-6 hover:bg-white hover:shadow-lg transition-all duration-300 shadow-sm">
+                <Shield className="w-8 h-8 text-blue-500 mb-4 mx-auto" />
+                <h3 className="text-gray-800 font-semibold mb-2">
                   Exclusive Access
                 </h3>
-                <p className="text-[#3a4449]/70 text-sm">
+                <p className="text-gray-600 text-sm">
                   Holder-only features and premium tools
                 </p>
               </Card>
 
-              <Card className="bg-[#f5f1e8]/80 border-[#3a4449]/20 backdrop-blur-sm p-6 hover:bg-[#3a4449]/10 transition-all duration-300">
-                <Sparkles className="w-8 h-8 text-[#5a6e73] mb-4 mx-auto" />
-                <h3 className="text-[#3a4449] font-semibold mb-2">
+              <Card className="bg-white/80 border-gray-200 backdrop-blur-md p-6 hover:bg-white hover:shadow-lg transition-all duration-300 shadow-sm">
+                <Sparkles className="w-8 h-8 text-purple-500 mb-4 mx-auto" />
+                <h3 className="text-gray-800 font-semibold mb-2">
                   Advanced Tools
                 </h3>
-                <p className="text-[#3a4449]/70 text-sm">
+                <p className="text-gray-600 text-sm">
                   Professional trading and analysis suite
                 </p>
               </Card>

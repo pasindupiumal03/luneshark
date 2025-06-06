@@ -64,38 +64,35 @@ export default function Navigation() {
   }, [walletAddress]);
 
   // Handle menu item click with async balance check
-  const handleMenuItemClick = useCallback(
-    async (action: string) => {
-      setIsOpen(false);
+  const handleMenuItemClick = async (action: string) => {
+    setIsOpen(false);
 
-      if (!walletAddress) {
-        setActiveModal("WalletNotConnectedNotification");
+    if (!walletAddress) {
+      setActiveModal("WalletNotConnectedNotification");
+      return;
+    }
+
+    if (["analytics", "images"].includes(action)) {
+      if (loadingTokens || isBalanceLoading) {
+        toast.info("Please wait, loading token balances...");
         return;
       }
 
-      if (["analytics", "images"].includes(action)) {
-        if (loadingTokens || isBalanceLoading) {
-          toast.info("Please wait, loading token balances...");
-          return;
-        }
+      const latestBalance = await getPlioBalance();
 
-        const latestBalance = await getPlioBalance();
-
-        setPlioBalance(latestBalance);
-        if (latestBalance === -1) {
-          setActiveModal("PlioBalanceError");
-          return;
-        }
-        if (latestBalance < MIN_PLIO_BALANCE) {
-          setActiveModal("PlioBalanceNotification");
-          return;
-        }
+      setPlioBalance(latestBalance);
+      if (latestBalance === -1) {
+        setActiveModal("PlioBalanceError");
+        return;
       }
+      if (latestBalance < MIN_PLIO_BALANCE) {
+        setActiveModal("PlioBalanceNotification");
+        return;
+      }
+    }
 
-      setActiveModal(action);
-    },
-    [walletAddress, getPlioBalance, loadingTokens, isBalanceLoading]
-  );
+    setActiveModal(action);
+  };
 
   // Listen for toolSelected events dispatched from dashboard or elsewhere
   useEffect(() => {
@@ -131,17 +128,11 @@ export default function Navigation() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  useEffect(() => {
-    if (walletAddress) {
-      getPlioBalance().then(setPlioBalance);
-    }
-  }, [walletAddress, getPlioBalance]);
-
   return (
     <>
       {/* Desktop Sidebar */}
       <nav
-        className="hidden lg:flex fixed left-0 top-0 h-[200vh] bg-[#f5f1e8]/80 w-20 flex-col items-center py-6 z-40 border-r-2 border-[#3a4449]/20"
+        className="hidden lg:flex fixed left-0 top-0 h-[200vh] bg-white/80 backdrop-blur-md w-20 flex-col items-center py-6 z-40 border-r border-gray-200 shadow-lg"
         role="navigation"
         aria-label="Main navigation"
       >
@@ -151,7 +142,7 @@ export default function Navigation() {
           onClick={() => router.push("/")}
           aria-label="Go to homepage"
         >
-          <div className="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center hover:opacity-80 transition-opacity mb-10">
+          <div className="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center hover:opacity-80 transition-opacity mb-10 border border-gray-200 shadow-sm">
             <img
               src="/luneshark_logo.png"
               alt="Luneshark Logo"
@@ -165,20 +156,11 @@ export default function Navigation() {
           {menuItems.map((item, index) => (
             <button
               key={index}
-              className={`w-12 h-12 flex items-center justify-center rounded-xl transition-all duration-300 hover:bg-[#3a4449]/10 hover:shadow-lg hover:shadow-[#3a4449]/10 group transform hover:-translate-y-0.5 active:translate-y-0 active:scale-95 ${
-                (item.action === "analytics" || item.action === "images") &&
-                isBalanceLoading
-                  ? "opacity-50 cursor-not-allowed"
-                  : ""
-              }`}
+              className="w-12 h-12 flex items-center justify-center rounded-xl transition-all duration-300 hover:bg-gray-100 hover:shadow-md hover:shadow-gray-300/50 group transform hover:-translate-y-0.5 active:translate-y-0 active:scale-95 border border-gray-200/50 hover:border-gray-300"
               aria-label={item.label}
               onClick={() => handleMenuItemClick(item.action)}
-              disabled={
-                (item.action === "analytics" || item.action === "images") &&
-                isBalanceLoading
-              }
             >
-              <item.icon className="text-[#3a4449] w-5 h-5 group-hover:text-[#5a6e73] transition-colors" />
+              <item.icon className="text-gray-600 w-5 h-5 group-hover:text-gray-800 transition-colors" />
             </button>
           ))}
         </div>
@@ -188,37 +170,37 @@ export default function Navigation() {
       <Button
         variant="ghost"
         size="icon"
-        className="lg:hidden fixed top-0 left-0 bg-[#f5f1e8]/80 backdrop-blur-sm border border-[#3a4449]/30 hover:bg-[#3a4449]/10 z-50"
+        className="lg:hidden fixed top-0 left-0 bg-white/80 backdrop-blur-md border border-gray-200 hover:bg-white text-gray-700 z-50 shadow-sm"
         onClick={() => setIsOpen(!isOpen)}
         aria-label={isOpen ? "Close menu" : "Open menu"}
       >
         {isOpen ? (
-          <X className="h-6 w-6 text-[#3a4449]" />
+          <X className="h-6 w-6 text-gray-700" />
         ) : (
-          <Menu className="h-6 w-6 text-[#3a4449]" />
+          <Menu className="h-6 w-6 text-gray-700" />
         )}
       </Button>
 
       {/* Mobile Menu Overlay */}
       {isOpen && (
         <div
-          className="lg:hidden fixed inset-0 z-40 bg-[#3a4449]/50 backdrop-blur-sm"
+          className="lg:hidden fixed inset-0 z-40 bg-black/30 backdrop-blur-sm"
           onClick={() => setIsOpen(false)}
           role="dialog"
           aria-label="Mobile navigation menu"
         >
-          <nav className="fixed left-0 top-0 h-full w-64 bg-[#f5f1e8]/95 backdrop-blur-sm border-r border-[#3a4449]/30 p-6">
+          <nav className="fixed left-0 top-0 h-full w-64 bg-white/95 backdrop-blur-md border-r border-gray-200 p-6 shadow-xl">
             {/* Logo */}
             <div className="mb-8 mt-12">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-lg overflow-hidden">
+                <div className="w-10 h-10 rounded-lg overflow-hidden border border-gray-200 shadow-sm">
                   <img
                     src="/luneshark_logo.png"
                     alt="Luneshark Logo"
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <span className="text-[#3a4449] font-bold text-xl">Plio</span>
+                <span className="text-gray-800 font-bold text-xl">Plio</span>
               </div>
             </div>
 
@@ -227,21 +209,12 @@ export default function Navigation() {
               {menuItems.map((item, index) => (
                 <button
                   key={index}
-                  className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 hover:bg-[#3a4449]/10 hover:shadow-lg hover:shadow-[#3a4449]/10 transform hover:-translate-x-1 active:translate-x-0 active:scale-[0.98] w-full text-left ${
-                    (item.action === "analytics" || item.action === "images") &&
-                    isBalanceLoading
-                      ? "opacity-50 cursor-not-allowed"
-                      : ""
-                  }`}
+                  className="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 hover:bg-gray-100 hover:shadow-md hover:shadow-gray-300/50 transform hover:-translate-x-1 active:translate-x-0 active:scale-[0.98] w-full text-left border border-gray-200/50 hover:border-gray-300"
                   onClick={() => handleMenuItemClick(item.action)}
                   aria-label={item.label}
-                  disabled={
-                    (item.action === "analytics" || item.action === "images") &&
-                    isBalanceLoading
-                  }
                 >
-                  <item.icon className="w-5 h-5 text-[#3a4449]" />
-                  <span className="text-[#3a4449]">{item.label}</span>
+                  <item.icon className="w-5 h-5 text-gray-500" />
+                  <span className="text-gray-700">{item.label}</span>
                 </button>
               ))}
             </div>

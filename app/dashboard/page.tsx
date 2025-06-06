@@ -43,57 +43,57 @@ const toolCards: ToolCard[] = [
   {
     name: "Torrent Games",
     desc: "Access a collection of games available for download.",
-    icon: <Gamepad2 className="w-6 h-6 text-[#f5f1e8]" />,
-    gradient: "from-[#5a6e73] to-[#3a4449]",
+    icon: <Gamepad2 className="w-6 h-6 text-white" />,
+    gradient: "from-blue-600 to-purple-600",
     action: "games",
   },
   {
     name: "Torrent Movies",
     desc: "Browse and download your favorite movies and TV shows.",
-    icon: <Film className="w-6 h-6 text-[#f5f1e8]" />,
-    gradient: "from-[#5a6e73] to-[#3a4449]",
+    icon: <Film className="w-6 h-6 text-white" />,
+    gradient: "from-purple-600 to-indigo-600",
     action: "movies",
   },
   {
     name: "Token Analytics",
     desc: "Deep dive into any Solana token with detailed analytics ",
-    icon: <BarChart3 className="w-6 h-6 text-[#f5f1e8]" />,
-    gradient: "from-[#5a6e73] to-[#3a4449]",
+    icon: <BarChart3 className="w-6 h-6 text-white" />,
+    gradient: "from-emerald-600 to-teal-600",
     action: "analytics",
   },
   {
     name: "Image Generator",
     desc: "Generate and download AI images.",
-    icon: <ImageIcon className="w-6 h-6 text-[#f5f1e8]" />,
-    gradient: "from-[#5a6e73] to-[#3a4449]",
+    icon: <ImageIcon className="w-6 h-6 text-white" />,
+    gradient: "from-orange-500 to-red-500",
     action: "images",
   },
   {
     name: "Roadmap",
     desc: "Check out our development roadmap and upcoming features.",
-    icon: <Map className="w-6 h-6 text-[#f5f1e8]" />,
-    gradient: "from-[#5a6e73] to-[#3a4449]",
+    icon: <Map className="w-6 h-6 text-white" />,
+    gradient: "from-cyan-500 to-blue-500",
     action: "roadmap",
   },
   {
     name: "AI Chatbot",
     desc: "Get instant answers to your blockchain questions.",
-    icon: <Bot className="w-6 h-6 text-[#f5f1e8]" />,
-    gradient: "from-[#5a6e73] to-[#3a4449]",
+    icon: <Bot className="w-6 h-6 text-white" />,
+    gradient: "from-violet-600 to-purple-600",
     action: "chat",
   },
   {
     name: "Crypto Market",
     desc: "Track cryptocurrency prices and market data.",
-    icon: <TrendingUp className="w-6 h-6 text-[#f5f1e8]" />,
-    gradient: "from-[#5a6e73] to-[#3a4449]",
+    icon: <TrendingUp className="w-6 h-6 text-white" />,
+    gradient: "from-green-600 to-emerald-600",
     action: "market",
   },
   {
     name: "More Tools",
     desc: "Coming soon - Stay tuned for more exciting features!",
-    icon: <Zap className="w-6 h-6 text-[#f5f1e8]" />,
-    gradient: "from-[#5a6e73] to-[#3a4449]",
+    icon: <Zap className="w-6 h-6 text-white" />,
+    gradient: "from-amber-500 to-orange-500",
     action: "more-tools",
     comingSoon: true,
   },
@@ -155,10 +155,10 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* Background with off-white color */}
-      <div className="absolute inset-0 bg-[#f5f1e8]">
-        {/* Network pattern */}
-        <div className="opacity-5">
+      {/* Background matching homepage */}
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-slate-50 to-gray-100">
+        {/* Enhanced network pattern matching homepage */}
+        <div className="absolute inset-0 opacity-10">
           <svg className="w-full h-full" viewBox="0 0 1200 800">
             <defs>
               <pattern
@@ -169,13 +169,13 @@ export default function Dashboard() {
                 height="100"
                 patternUnits="userSpaceOnUse"
               >
-                <circle cx="50" cy="50" r="2" fill="#3a4449" />
+                <circle cx="50" cy="50" r="2" fill="rgba(71,85,105,0.6)" />
                 <line
                   x1="50"
                   y1="50"
                   x2="100"
                   y2="0"
-                  stroke="#3a4449"
+                  stroke="rgba(71,85,105,0.4)"
                   strokeWidth="1"
                 />
                 <line
@@ -183,7 +183,7 @@ export default function Dashboard() {
                   y1="50"
                   x2="100"
                   y2="100"
-                  stroke="#3a4449"
+                  stroke="rgba(71,85,105,0.4)"
                   strokeWidth="1"
                 />
                 <line
@@ -191,7 +191,7 @@ export default function Dashboard() {
                   y1="50"
                   x2="0"
                   y2="100"
-                  stroke="#3a4449"
+                  stroke="rgba(71,85,105,0.4)"
                   strokeWidth="1"
                 />
               </pattern>
@@ -205,32 +205,35 @@ export default function Dashboard() {
           <ParticlesBackground />
         </div>
 
-        {/* Floating particles */}
+        {/* Enhanced floating particles matching homepage */}
         <div className="absolute inset-0">
           {particleStyles.map((style, i) => (
             <div
               key={i}
-              className="absolute w-2 h-2 bg-[#3a4449]/20 rounded-full animate-pulse"
+              className="absolute w-2 h-2 bg-slate-500/50 rounded-full animate-pulse"
               style={style}
             />
           ))}
         </div>
+
+        {/* Reduced overlay for better pattern visibility */}
+        <div className="absolute inset-0 bg-gradient-to-t from-white/10 via-transparent to-white/5" />
       </div>
 
       <div className="min-h-screen w-full flex relative z-10">
         <Navigation />
-        <main className="flex-1 p-6 md:p-12 flex flex-col items-center w-full min-h-screen bg-transparent lg:ml-12">
+        <main className="flex-1 p-6 md:p-12 flex flex-col items-center w-full min-h-screen bg-transparent">
           <div className="w-full max-w-6xl mx-auto relative z-10">
             <div className="text-center mb-12">
               <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
-                <span className="bg-gradient-to-r from-[#5a6e73] to-[#3a4449] bg-clip-text text-transparent font-extrabold">
-                  $Luneshark{" "}
+                <span className="bg-gradient-to-r from-amber-600 via-orange-500 to-red-500 bg-clip-text text-transparent font-extrabold">
+                  $LUNESHARK{" "}
                 </span>
-                <span className="bg-gradient-to-r from-[#3a4449] to-[#5a6e73] bg-clip-text text-transparent font-extrabold">
+                <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent font-extrabold">
                   Features
                 </span>
               </h2>
-              <p className="text-xl text-[#3a4449]/80 font-mono max-w-3xl mx-auto">
+              <p className="text-xl text-gray-700 max-w-3xl mx-auto">
                 Explore our suite of tools designed to enhance your experience
               </p>
             </div>
@@ -245,21 +248,21 @@ export default function Dashboard() {
                   }`}
                   onClick={() => handleToolCardClick(card)}
                 >
-                  <div className="backdrop-blur-md bg-[#f5f1e8]/80 border-2 border-[#3a4449]/30 glass-navbar p-8 rounded-2xl h-full relative overflow-hidden transition-all duration-300 hover:scale-[1.02]">
+                  <div className="bg-white/80 backdrop-blur-md border border-gray-200 p-8 rounded-2xl h-full relative overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:bg-white hover:shadow-lg shadow-sm">
                     <div
                       className={
                         card.comingSoon || card.restricted ? "opacity-70" : ""
                       }
                     >
-                      {/* Gradient background */}
+                      {/* Subtle gradient background overlay */}
                       <div
-                        className={`absolute inset-0 bg-gradient-to-br ${card.gradient} opacity-10 group-hover:opacity-20 transition-opacity duration-300`}
+                        className={`absolute inset-0 bg-gradient-to-br ${card.gradient} opacity-5 group-hover:opacity-10 transition-opacity duration-300 rounded-2xl`}
                       />
 
                       {/* Icon */}
                       <div className="relative mb-6">
                         <div
-                          className={`relative w-16 h-16 rounded-xl flex items-center justify-center bg-gradient-to-br ${card.gradient}`}
+                          className={`relative w-16 h-16 rounded-xl flex items-center justify-center bg-gradient-to-br ${card.gradient} text-white shadow-lg`}
                         >
                           {card.icon}
                         </div>
@@ -267,21 +270,21 @@ export default function Dashboard() {
 
                       {/* Content */}
                       <div className="relative">
-                        <h3 className="text-xl font-bold text-[#3a4449] mb-2">
+                        <h3 className="text-xl font-bold text-gray-800 mb-2">
                           {card.name}
                         </h3>
-                        <p className="text-[#3a4449]/70 mb-4">{card.desc}</p>
+                        <p className="text-gray-600 mb-4">{card.desc}</p>
                       </div>
 
                       {/* Badges */}
                       <div className="flex flex-wrap gap-2 mt-4">
                         {card.restricted && (
-                          <span className="px-3 py-1 text-xs font-medium rounded-full bg-[#5a6e73]/20 text-[#5a6e73] border border-[#5a6e73]/30">
+                          <span className="px-3 py-1 text-xs font-medium rounded-full bg-gradient-to-r from-red-100 to-red-200 text-red-700 border border-red-300">
                             Premium
                           </span>
                         )}
                         {card.comingSoon && (
-                          <span className="px-3 py-1 text-xs font-medium rounded-full bg-[#5a6e73]/20 text-[#5a6e73] border border-[#5a6e73]/30">
+                          <span className="px-3 py-1 text-xs font-medium rounded-full bg-gradient-to-r from-blue-100 to-blue-200 text-blue-700 border border-blue-300">
                             Coming Soon
                           </span>
                         )}
@@ -289,7 +292,9 @@ export default function Dashboard() {
                     </div>
 
                     {/* Hover effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#5a6e73]/5 to-[#3a4449]/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl" />
+                    <div
+                      className={`absolute inset-0 bg-gradient-to-r ${card.gradient} opacity-0 group-hover:opacity-5 transition-opacity rounded-2xl`}
+                    />
                   </div>
                 </div>
               ))}
