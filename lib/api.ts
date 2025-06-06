@@ -17,7 +17,7 @@ if (!SOLANA_TRACKER_API_KEY) {
 export const getTrendingTokens = async () => {
   try {
     const response = await axios.get(
-      `${SOLANA_TRACKER_API_URL}/tokens/trending`,
+      `${SOLANA_TRACKER_API_URL}/tokens/trending/24h`,
       {
         headers: { "x-api-key": SOLANA_TRACKER_API_KEY },
       }
