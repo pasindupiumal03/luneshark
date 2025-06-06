@@ -282,7 +282,7 @@ export default function HomePage() {
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight text-[#3a4449]">
               <span className="relative">
                 <span className="bg-gradient-to-r from-[#5a6e73] to-[#3a4449] bg-clip-text text-transparent font-extrabold">
-                  $Luneshark
+                  $Plio
                 </span>
                 <span className="mx-3 text-[#3a4449]">Holder</span>
                 <span className="bg-gradient-to-r from-[#3a4449] to-[#5a6e73] bg-clip-text text-transparent font-extrabold">
@@ -300,7 +300,7 @@ export default function HomePage() {
               className="bg-[#5a6e73] hover:bg-[#3a4449] text-[#f5f1e8] font-semibold px-8 py-6 text-lg shadow-2xl shadow-[#3a4449]/25 transition-all duration-300 hover:scale-105"
             >
               <Rocket className="w-6 h-6 mr-3" />
-              Launch Luneshark
+              Launch Plio
               <ExternalLink className="w-4 h-4 ml-2" />
             </Button>
 
