@@ -77,7 +77,7 @@ export default function HomePage() {
       <Navigation />
       <div className="absolute inset-0 bg-[#f5f1e8]">
         {/* Network pattern */}
-        <div className="opacity-30">
+        <div className="opacity-10">
           <svg className="w-full h-full" viewBox="0 0 1200 800">
             <defs>
               <pattern
