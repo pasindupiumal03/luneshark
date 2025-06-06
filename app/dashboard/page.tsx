@@ -224,7 +224,7 @@ export default function Dashboard() {
             <div className="text-center mb-12">
               <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
                 <span className="bg-gradient-to-r from-[#5a6e73] to-[#3a4449] bg-clip-text text-transparent font-extrabold">
-                  $Plio{" "}
+                  $Luneshark{" "}
                 </span>
                 <span className="bg-gradient-to-r from-[#3a4449] to-[#5a6e73] bg-clip-text text-transparent font-extrabold">
                   Features
