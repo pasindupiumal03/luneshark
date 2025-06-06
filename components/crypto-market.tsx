@@ -302,14 +302,7 @@ export default function CryptoMarket({ onClose }: CryptoMarketProps) {
                         ? (crypto as CryptoData).id
                         : (crypto as TrendingToken).token.symbol
                     }
-                    className={`bg-slate-800/40 border rounded-lg p-6 hover:bg-slate-800/60 transition-all duration-300 hover:shadow-lg hover:shadow-blue-900/20 ${
-                      (activeTab === "large-cap" &&
-                        (crypto as CryptoData).symbol === "SOL") ||
-                      (activeTab === "meme-coins" &&
-                        (crypto as TrendingToken).token.symbol === "DOGE")
-                        ? "border-blue-500/50 shadow-lg shadow-blue-500/20"
-                        : "border-slate-700/50"
-                    }`}
+                    className="border-slate-700/50 bg-slate-800/40 border rounded-lg p-6 hover:bg-slate-800/60 transition-all duration-300 hover:shadow-lg hover:shadow-blue-900/20"
                   >
                     <div className="flex items-center space-x-3 mb-4">
                       {/* Coin Icon */}
@@ -369,18 +362,27 @@ export default function CryptoMarket({ onClose }: CryptoMarketProps) {
                       </div>
                       {/* 24h Change */}
                       <div className="flex items-center">
+                        {/* Arrow icon */}
                         {activeTab === "large-cap" ? (
-                          (crypto as CryptoData).change24h > 0
+                          (crypto as CryptoData).change24h > 0 ? (
+                            <TrendingUp className="w-4 h-4 text-green-400" />
+                          ) : (
+                            <TrendingDown className="w-4 h-4 text-red-400" />
+                          )
                         ) : (crypto as TrendingToken).events["24h"]
                             .priceChangePercentage > 0 ? (
                           <TrendingUp className="w-4 h-4 text-green-400" />
                         ) : (
                           <TrendingDown className="w-4 h-4 text-red-400" />
                         )}
+
+                        {/* Percentage text */}
                         <span
                           className={`text-xs ml-1 ${
                             activeTab === "large-cap"
                               ? (crypto as CryptoData).change24h > 0
+                                ? "text-green-400"
+                                : "text-red-400"
                               : (crypto as TrendingToken).events["24h"]
                                   .priceChangePercentage > 0
                               ? "text-green-400"
@@ -389,6 +391,8 @@ export default function CryptoMarket({ onClose }: CryptoMarketProps) {
                         >
                           {activeTab === "large-cap"
                             ? (crypto as CryptoData).change24h > 0
+                              ? "+"
+                              : ""
                             : (crypto as TrendingToken).events["24h"]
                                 .priceChangePercentage > 0
                             ? "+"
