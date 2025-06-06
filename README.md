@@ -1,6 +1,6 @@
-# Plio - AI-Powered Web3 Platform
+# Luneshark - AI-Powered Web3 Platform
 
-A modern Next.js application featuring AI chat, cryptocurrency tools, and exclusive features for $Plio token holders.
+A modern Next.js application featuring AI chat, cryptocurrency tools, and exclusive features for $LUNESHARK token holders.
 
 ## ✨ Features
 
@@ -24,23 +24,28 @@ A modern Next.js application featuring AI chat, cryptocurrency tools, and exclus
 ### Local Development
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/yourusername/plio.git
    cd plio
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
 
 3. Set up environment variables:
+
    ```bash
    cp .env.example .env.local
    ```
+
    Then edit `.env.local` and add your API keys.
 
 4. Run the development server:
+
    ```bash
    npm run dev
    ```
@@ -70,16 +75,19 @@ OPENAI_API_KEY=your_openai_api_key
 ## 🔑 Required API Keys
 
 ### OpenAI API Key
+
 - Used for AI chat functionality
 - Get your key from: [OpenAI API Keys](https://platform.openai.com/api-keys)
 - Add to `.env.local` as `OPENAI_API_KEY`
 
 ### CoinMarketCap API Key (Free Tier)
+
 - Used for cryptocurrency market data
 - Get your key from: [CoinMarketCap API](https://coinmarketcap.com/api/)
 - Add to `.env.local` as `NEXT_PUBLIC_COINMARKETCAP_API_KEY`
 
 ### RPC Endpoint (Optional but recommended)
+
 - For better performance, use a dedicated RPC endpoint
 - Options: [QuickNode](https://www.quicknode.com/), [Alchemy](https://www.alchemy.com/), or [Triton](https://triton.one/)
 - Add to `.env.local` as `NEXT_PUBLIC_RPC_URL`
@@ -118,12 +126,14 @@ plio/
 ## 🌟 Features Overview
 
 ### For Everyone
+
 - AI-powered chat assistant
 - Cryptocurrency market data
 - Project information and roadmap
 - Responsive design for all devices
 
-### For $Plio Holders (50k+)
+### For $Luneshark Holders (50k+)
+
 - Advanced analytics dashboard
 - AI image generation
 - Premium support
@@ -151,17 +161,20 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 5. Open a Pull Request
 
 ### Wallet Integration
-- Connect Phantom wallet to view $Plio balance
+
+- Connect Phantom wallet to view $LUNESHARK balance
 - Automatic feature access based on token holdings
 - Secure wallet connection with disconnect option
 
 ### PlioBot AI Assistant
+
 - **Nice Mode**: Friendly, helpful responses with emojis
 - **Crude Mode**: Direct, no-nonsense responses
 - Real-time chat with conversation history
 - Powered by OpenAI GPT-3.5-turbo
 
 ### Crypto Market Dashboard
+
 - Live prices from CoinMarketCap API
 - Large Cap cryptocurrencies (BTC, ETH, SOL, etc.)
 - Popular meme coins (DOGE, SHIB, PEPE, etc.)
@@ -170,13 +183,16 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## Deployment
 
 ### Vercel (Recommended)
+
 1. Push your code to GitHub
 2. Connect your repository to Vercel
 3. Add environment variables in Vercel dashboard
 4. Deploy automatically
 
 ### Other Platforms
+
 The app can be deployed to any platform that supports Next.js:
+
 - Netlify
 - Railway
 - DigitalOcean App Platform
@@ -184,11 +200,11 @@ The app can be deployed to any platform that supports Next.js:
 
 ## Environment Variables
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `OPENAI_API_KEY` | OpenAI API key for chat functionality | Yes |
-| `COINMARKETCAP_API_KEY` | CoinMarketCap API key for crypto prices | Yes |
-| `NEXT_PUBLIC_APP_URL` | Your app's URL | No |
+| Variable                | Description                             | Required |
+| ----------------------- | --------------------------------------- | -------- |
+| `OPENAI_API_KEY`        | OpenAI API key for chat functionality   | Yes      |
+| `COINMARKETCAP_API_KEY` | CoinMarketCap API key for crypto prices | Yes      |
+| `NEXT_PUBLIC_APP_URL`   | Your app's URL                          | No       |
 
 ## Contributing
 

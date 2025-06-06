@@ -142,7 +142,7 @@ export default function PlioBot({ onClose }: PlioBotProps) {
             <div className="absolute left-1/2 transform -translate-x-1/2 text-center">
               <h2 className="text-xl font-bold text-white flex items-center">
                 <Bot className="w-6 h-6 mr-2 text-cyan-400" />
-                PlioBot Chat
+                LunesharkBot Chat
                 <span className="text-yellow-400 ml-2">✨</span>
               </h2>
               <p className="text-xs text-slate-400 mt-1">
@@ -180,10 +180,10 @@ export default function PlioBot({ onClose }: PlioBotProps) {
                 </div>
                 <div>
                   <p className="text-slate-300 text-lg font-medium">
-                    Welcome to PlioBot! 👋
+                    Welcome to LunesharkBot! 👋
                   </p>
                   <p className="text-slate-400 text-sm mt-2">
-                    Ask me about Plio, Solana, or the tools available!
+                    Ask me about Luneshark, Solana, or the tools available!
                   </p>
                   <p className="text-slate-500 text-xs mt-1">
                     Currently in {isNiceMode ? "nice" : "crude"} mode
@@ -282,7 +282,7 @@ export default function PlioBot({ onClose }: PlioBotProps) {
                       ></div>
                     </div>
                     <span className="text-slate-300 text-xs">
-                      PlioBot is thinking...
+                      LunesharkBot is thinking...
                     </span>
                   </div>
                 </div>
@@ -306,7 +306,7 @@ export default function PlioBot({ onClose }: PlioBotProps) {
                     handleKeyPress(e);
                   }
                 }}
-                placeholder="Ask PlioBot anything..."
+                placeholder="Ask LunesharkBot anything..."
                 className="bg-slate-700/50 border-slate-600 text-white placeholder-slate-400 focus:border-cyan-500 focus:ring-cyan-500/20 rounded-xl pr-12 py-3 transition-all duration-200"
                 disabled={isLoading}
               />

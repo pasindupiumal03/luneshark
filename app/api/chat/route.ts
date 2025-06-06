@@ -160,16 +160,16 @@ Current crypto data for ${topPair.baseToken.name} (${topPair.baseToken.symbol}):
 
     // Step 4: Build conversation context for OpenAI with crypto data if available
     const systemPrompt = isNiceMode
-      ? `You are PlioBot, a helpful and enthusiastic AI assistant for the $Plio token ecosystem. You're an expert on:
-        - $Plio token and its holder benefits
+      ? `You are LunesharkBot, a helpful and enthusiastic AI assistant for the $LUNESHARK token ecosystem. You're an expert on:
+        - $LUNESHARK token and its holder benefits
         - Solana blockchain technology and ecosystem
         - Cryptocurrency markets and DeFi
-        - The Plio Holder Panel tools (torrent search, analytics, image generation)
+        - The Luneshark Holder Panel tools (torrent search, analytics, image generation)
         - Upcoming features like crypto market dashboard and Solana gas tracker
         
-        Key facts about $Plio:
+        Key facts about $LUNESHARK:
         - Built on Solana blockchain
-        - Requires 50,000 $Plio tokens for premium features (Analytics & Image Generation)
+        - Requires 50,000 $LUNESHARK tokens for premium features (Analytics & Image Generation)
         - Offers torrent search for games and movies
         - Has an active roadmap with exciting features coming
         
@@ -179,15 +179,15 @@ Current crypto data for ${topPair.baseToken.name} (${topPair.baseToken.symbol}):
             : ""
         }
         
-        Always be helpful, informative, and enthusiastic about the $Plio ecosystem. Use emojis occasionally and maintain a positive, friendly tone. If asked about prices and you have live data, provide it. If no live data available, mention that real-time price tracking is coming in the Crypto Market Dashboard.`
-      : `You are PlioBot in crude mode - a direct, no-nonsense AI assistant for the $Plio token ecosystem. You're an expert on:
-        - $Plio token and its holder benefits  
+        Always be helpful, informative, and enthusiastic about the $LUNESHARK ecosystem. Use emojis occasionally and maintain a positive, friendly tone. If asked about prices and you have live data, provide it. If no live data available, mention that real-time price tracking is coming in the Crypto Market Dashboard.`
+      : `You are LunesharkBot in crude mode - a direct, no-nonsense AI assistant for the $LUNESHARK token ecosystem. You're an expert on:
+        - $LUNESHARK token and its holder benefits  
         - Solana blockchain technology
         - Cryptocurrency markets
-        - The Plio Holder Panel tools and features
+        - The Luneshark Holder Panel tools and features
         
         Key facts:
-        - $Plio is on Solana
+        - $LUNESHARK is on Solana
         - Need 50k tokens for premium features
         - Free users get basic tools only
         - Premium users get analytics and image generation
@@ -309,7 +309,7 @@ async function retrieveCryptoDetailsFromUserMessage(
               `{\n  "token": "contract_address_if_mentioned",\n  "symbol": "token_symbol_like_BTC_ETH_SOL",\n  "name": "full_token_name_like_Bitcoin_Ethereum"\n}\n\n` +
               "Examples:\n" +
               '- \'What\'s the price of Bitcoin?\' → {"token": "", "symbol": "BTC", "name": "Bitcoin"}\n' +
-              '- \'Tell me about PLIO token\' → {"token": "", "symbol": "PLIO", "name": "Plio"}\n' +
+              '- \'Tell me about LUNESHARK token\' → {"token": "", "symbol": "LUNESHARK", "name": "Luneshark"}\n' +
               '- \'How is Solana doing?\' → {"token": "", "symbol": "SOL", "name": "Solana"}\n' +
               '- \'Price of tokenAddress(FYI-this is a placeholder for a sample tokens like 676YgDtdAekpjYwNvLSLFPkBooVxBqJVpgxxoHJPpump, So11111111111111111111111111111111111111112, GWPLjamb5ZxrGbTsYNWW7V3p1pAMryZSfaPFTdaEsWgC) token?\' → {"token": "passed_token_address", "symbol": "SOL", "name": "Solana"}\n' +
               '- \'Hello there\' → {"token": "", "symbol": "", "name": ""}\n\n' +
@@ -378,15 +378,18 @@ function getPlioAgentResponse(message: string, isNiceMode: boolean) {
   const lowerMessage = message.toLowerCase();
 
   // Plio-related responses
-  if (lowerMessage.includes("plio") || lowerMessage.includes("$plio")) {
+  if (
+    lowerMessage.includes("luneshark") ||
+    lowerMessage.includes("$luneshark")
+  ) {
     const responses = isNiceMode
       ? [
-          "$Plio is an amazing token on the Solana blockchain! 🚀 It powers our exclusive holder panel with tools for games, movies, and more. The current requirement for premium features is 50,000 $Plio tokens.",
-          "Great question about $Plio! 😊 It's the utility token that unlocks all the cool features in our holder panel. From torrent searches to analytics tools, $Plio holders get exclusive access!",
+          "$LUNESHARK is an amazing token on the Solana blockchain! 🚀 It powers our exclusive holder panel with tools for games, movies, and more. The current requirement for premium features is 50,000 $LUNESHARK tokens.",
+          "Great question about $LUNESHARK! 😊 It's the utility token that unlocks all the cool features in our holder panel. From torrent searches to analytics tools, $LUNESHARK holders get exclusive access!",
         ]
       : [
-          "$Plio is the token that separates the holders from the wannabes. You need 50k tokens to access the good stuff. No tokens? Enjoy the basic features.",
-          "Plio token - your ticket to the VIP section. Without it, you're stuck in the cheap seats watching others have fun.",
+          "$LUNESHARK is the token that separates the holders from the wannabes. You need 50k tokens to access the good stuff. No tokens? Enjoy the basic features.",
+          "$LUNESHARK token - your ticket to the VIP section. Without it, you're stuck in the cheap seats watching others have fun.",
         ];
     return NextResponse.json({
       message: responses[Math.floor(Math.random() * responses.length)],
@@ -397,8 +400,8 @@ function getPlioAgentResponse(message: string, isNiceMode: boolean) {
   if (lowerMessage.includes("solana") || lowerMessage.includes("sol")) {
     const responses = isNiceMode
       ? [
-          "Solana is a fast and scalable blockchain! ⚡ It's a great network for projects like $Plio! 😊 With low fees and high throughput, it's perfect for our ecosystem.",
-          "Solana is known for its speed and low transaction fees, while Ethereum has a larger ecosystem and is more decentralized. Both are great, but Solana is perfect for fast-paced projects like $Plio! 🚀",
+          "Solana is a fast and scalable blockchain! ⚡ It's a great network for projects like $LUNESHARK! 😊 With low fees and high throughput, it's perfect for our ecosystem.",
+          "Solana is known for its speed and low transaction fees, while Ethereum has a larger ecosystem and is more decentralized. Both are great, but Solana is perfect for fast-paced projects like $LUNESHARK! 🚀",
         ]
       : [
           "Solana - fast, cheap, and doesn't make you wait forever for transactions like some other chains. That's why we built on it.",
@@ -414,7 +417,7 @@ function getPlioAgentResponse(message: string, isNiceMode: boolean) {
     const responses = isNiceMode
       ? [
           "I can't give you real-time prices with the current tools, but the Crypto Market Tracker is coming soon! 😊 I'll let you know as soon as it's live.",
-          "Price tracking is on our roadmap! 📈 The upcoming Crypto Market Dashboard will show live prices for SOL, BTC, ETH, and of course $Plio!",
+          "Price tracking is on our roadmap! 📈 The upcoming Crypto Market Dashboard will show live prices for SOL, BTC, ETH, and of course $LUNESHARK!",
         ]
       : [
           "No live prices yet. The market tracker isn't ready. Check back later or use CoinGecko like everyone else.",
@@ -429,11 +432,11 @@ function getPlioAgentResponse(message: string, isNiceMode: boolean) {
   if (lowerMessage.includes("tools") || lowerMessage.includes("features")) {
     const responses = isNiceMode
       ? [
-          "Our holder panel has some awesome tools! 🎮 You can search for game and movie torrents, check out our roadmap, and chat with me! Premium features like Analytics and Image Generation require 50,000 $Plio tokens.",
+          "Our holder panel has some awesome tools! 🎮 You can search for game and movie torrents, check out our roadmap, and chat with me! Premium features like Analytics and Image Generation require 50,000 $LUNESHARK tokens.",
           "We've got torrent search for games and movies, a detailed project roadmap, and this chat feature! 😊 More tools are coming soon, including crypto market tracking and Solana network stats!",
         ]
       : [
-          "Games, movies, roadmap, and this chat. That's what you get for free. Want the good stuff? Buy 50k $Plio tokens.",
+          "Games, movies, roadmap, and this chat. That's what you get for free. Want the good stuff? Buy 50k $LUNESHARK tokens.",
           "Basic tools are free, premium tools cost tokens. Simple economics. Pay to play or stick to the freebies.",
         ];
     return NextResponse.json({
@@ -444,14 +447,14 @@ function getPlioAgentResponse(message: string, isNiceMode: boolean) {
   // Default responses
   const defaultResponses = isNiceMode
     ? [
-        "I'm here to help with anything related to $Plio, Solana, or our tools! 😊 What would you like to know?",
-        "Feel free to ask me about $Plio tokens, Solana blockchain, or any of the features in our holder panel!18:39 PM +0530 on Sunday, June 01, 2025! 🚀",
-        "I'm your friendly PlioBot assistant! Ask me about crypto, our tools, or anything else you're curious about! ✨",
+        "I'm here to help with anything related to $LUNESHARK, Solana, or our tools! 😊 What would you like to know?",
+        "Feel free to ask me about $LUNESHARK tokens, Solana blockchain, or any of the features in our holder panel!18:39 PM +0530 on Sunday, June 01, 2025! 🚀",
+        "I'm your friendly LunesharkBot assistant! Ask me about crypto, our tools, or anything else you're curious about! ✨",
       ]
     : [
-        "Ask me something useful about Plio, Solana, or the tools. I don't do small talk.",
+        "Ask me something useful about $LUNESHARK, Solana, or the tools. I don't do small talk.",
         "What do you want to know? Make it worth my time.",
-        "I'm here for Plio and crypto questions. Shoot.",
+        "I'm here for Luneshark and crypto questions. Shoot.",
       ];
 
   return NextResponse.json({

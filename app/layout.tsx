@@ -7,11 +7,11 @@ import { WalletProvider } from "@/contexts/WalletContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Plio - Holder Panel",
-  description: "Access exclusive holder tools for $Plio token holders",
+  title: "Luneshark - Holder Panel",
+  description: "Access exclusive holder tools for $Luneshark token holders",
   generator: "v0.dev",
   icons: {
-    icon: "/plio_logo.jpg",
+    icon: "/luneshark_logo.png",
   },
 };
 

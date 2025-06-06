@@ -24,6 +24,7 @@ import ImageGenerator from "./image-generator";
 import Notification from "./notification";
 import { useWallet } from "@/contexts/WalletContext";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 const menuItems = [
   { icon: Gamepad2, label: "Games", action: "games" },
@@ -42,14 +43,57 @@ export default function Navigation() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [activeModal, setActiveModal] = useState<string | null>(null);
-  const { walletAddress, tokenBalances, loadingTokens, refreshTokenBalances } =
-    useWallet();
+  const [plioBalance, setPlioBalance] = useState(0);
+  const { walletAddress, loadingTokens } = useWallet();
 
-  useEffect(() => {
-    refreshTokenBalances();
-  }, []);
+  const getPlioBalance = useCallback(async (): Promise<number> => {
+    if (!walletAddress) return -1;
+    try {
+      const response = await axios.get(`/api/plio-balance`, {
+        params: { wallet: walletAddress, plioMint: PLIO_TOKEN_MINT },
+      });
+      return response.data.balance;
+    } catch (error) {
+      console.error("Error fetching token balance from server:", error);
+      return -1;
+    }
+  }, [walletAddress]);
 
-  // Listen for tool selection events from the dashboard
+  // Handle menu item click with async balance check
+  const handleMenuItemClick = useCallback(
+    async (action: string) => {
+      setIsOpen(false);
+
+      if (!walletAddress) {
+        setActiveModal("WalletNotConnectedNotification");
+        return;
+      }
+
+      if (["analytics", "images"].includes(action)) {
+        if (loadingTokens) {
+          toast.info("Please wait, loading token balances...");
+          return;
+        }
+
+        const latestBalance = await getPlioBalance();
+
+        setPlioBalance(latestBalance);
+        if (latestBalance === -1) {
+          setActiveModal("PlioBalanceError");
+          return;
+        }
+        if (latestBalance < MIN_PLIO_BALANCE) {
+          setActiveModal("PlioBalanceNotification");
+          return;
+        }
+      }
+
+      setActiveModal(action);
+    },
+    [walletAddress, getPlioBalance, loadingTokens]
+  );
+
+  // Listen for toolSelected events dispatched from dashboard or elsewhere
   useEffect(() => {
     const handleToolSelected = (event: Event) => {
       const customEvent = event as CustomEvent<{ action: string }>;
@@ -69,48 +113,9 @@ export default function Navigation() {
         handleToolSelected as EventListener
       );
     };
-  }, []); // Stable due to handleMenuItemClick being memoized
+  }, [handleMenuItemClick]);
 
-  const handleMenuItemClick = useCallback(
-    async (action: string) => {
-      setIsOpen(false);
-
-      if (!walletAddress) {
-        setActiveModal("WalletNotConnectedNotification");
-        return;
-      }
-
-      // Refresh balances before checking
-      if (["analytics", "images"].includes(action)) {
-        await refreshTokenBalances(); // Ensure we have latest balances
-      }
-
-      const updatedPlioBalance =
-        (walletAddress &&
-          tokenBalances.find((token) => token.mint === PLIO_TOKEN_MINT)
-            ?.uiAmount) ||
-        null;
-
-      const hasEnough =
-        updatedPlioBalance !== null && updatedPlioBalance >= MIN_PLIO_BALANCE;
-
-      if (["analytics", "images"].includes(action)) {
-        if (loadingTokens) {
-          toast.info("Please wait, loading token balances...");
-          return;
-        }
-        if (!hasEnough) {
-          setActiveModal("PlioBalanceNotification");
-          return;
-        }
-      }
-
-      setActiveModal(action);
-    },
-    [walletAddress, tokenBalances, loadingTokens, refreshTokenBalances]
-  );
-
-  // Handle Escape key to close mobile menu
+  // Escape key to close menu/modals
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -121,6 +126,12 @@ export default function Navigation() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
+
+  useEffect(() => {
+    if (walletAddress) {
+      getPlioBalance().then(setPlioBalance);
+    }
+  }, [walletAddress, getPlioBalance]);
 
   return (
     <>
@@ -138,12 +149,13 @@ export default function Navigation() {
         >
           <div className="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center hover:opacity-80 transition-opacity mb-10">
             <img
-              src="/plio_logo.jpg"
-              alt="Plio Logo"
+              src="/luneshark_logo.png"
+              alt="Luneshark Logo"
               className="w-full h-full object-cover"
             />
           </div>
         </div>
+
         {/* Menu Items */}
         <div className="flex flex-col space-y-4">
           {menuItems.map((item, index) => (
@@ -188,8 +200,8 @@ export default function Navigation() {
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 rounded-lg overflow-hidden">
                   <img
-                    src="/plio_logo.jpg"
-                    alt="Plio Logo"
+                    src="/luneshark_logo.png"
+                    alt="Luneshark Logo"
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -218,8 +230,8 @@ export default function Navigation() {
       {/* Modals */}
       {activeModal === "PlioBalanceNotification" && (
         <Notification
-          title="Insufficient $Plio Balance"
-          message={`You need at least ${MIN_PLIO_BALANCE.toLocaleString()} $Plio to access this feature.`}
+          title="Insufficient $Luneshark Balance"
+          message={`You need at least ${MIN_PLIO_BALANCE.toLocaleString()} $Luneshark to access this feature.`}
           type="error"
           onClose={() => setActiveModal(null)}
         />
@@ -227,8 +239,16 @@ export default function Navigation() {
       {activeModal === "WalletNotConnectedNotification" && (
         <Notification
           title="Wallet not connected"
-          message={`Please connect your wallet using browser extension.`}
-          type="error"
+          message={`Please connect your wallet to use this feature.`}
+          type="warning"
+          onClose={() => setActiveModal(null)}
+        />
+      )}
+      {activeModal === "PlioBalanceError" && (
+        <Notification
+          title="Server issue"
+          message={`Error while retrieving $Luneshark balance. Try again`}
+          type="warning"
           onClose={() => setActiveModal(null)}
         />
       )}

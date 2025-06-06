@@ -31,7 +31,7 @@ const roadmapItems: RoadmapItem[] = [
     id: "1",
     title: "Crypto Market Dashboard",
     description:
-      "Show current prices for SOL and other major cryptos (BTC, ETH, PLIO, and more trending meme coins) directly within the panel. Automatic AI price analysis by Google Gemini so you always know where the market is headed. Powered by lightning fast price APIs.",
+      "Show current prices for SOL and other major cryptos (BTC, ETH, LUNESHARK, and more trending meme coins) directly within the panel. Automatic AI price analysis by Google Gemini so you always know where the market is headed. Powered by lightning fast price APIs.",
     status: "IN PROGRESS",
     icon: TrendingUp,
     iconColor: "bg-gradient-to-br from-purple-500 to-pink-500",
@@ -67,7 +67,7 @@ const roadmapItems: RoadmapItem[] = [
     id: "5",
     title: "Android Mobile App",
     description:
-      "Develop a native Android application to bring the Plio Holder Panel features to mobile devices for enhanced accessibility and convenience. Potential for push notifications for market alerts and search feature for cracked APKs (free paid apps).",
+      "Develop a native Android application to bring the LUNESHARK Holder Panel features to mobile devices for enhanced accessibility and convenience. Potential for push notifications for market alerts and search feature for cracked APKs (free paid apps).",
     status: "PLANNED",
     icon: Smartphone,
     iconColor: "bg-gradient-to-br from-violet-500 to-indigo-500",
@@ -76,7 +76,7 @@ const roadmapItems: RoadmapItem[] = [
     id: "6",
     title: "Ad-Funded Buybacks",
     description:
-      "Incorporate unobtrusive advertisements for users who do not meet the $Plio holding requirement. Revenue generated from these ads will be used to facilitate buybacks of $Plio tokens, directly benefiting holders.",
+      "Incorporate unobtrusive advertisements for users who do not meet the $LUNESHARK holding requirement. Revenue generated from these ads will be used to facilitate buybacks of $LUNESHARK tokens, directly benefiting holders.",
     status: "PLANNED",
     icon: DollarSign,
     iconColor: "bg-gradient-to-br from-emerald-500 to-green-500",

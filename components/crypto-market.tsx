@@ -106,8 +106,8 @@ export default function CryptoMarket({ onClose }: CryptoMarketProps) {
           <div className="flex items-center space-x-4">
             <div className="w-10 h-10 rounded-lg overflow-hidden">
               <img
-                src="/plio_logo.jpg"
-                alt="Plio Logo"
+                src="/luneshark_logo.png"
+                alt="Luneshark Logo"
                 className="w-full h-full object-cover"
               />
             </div>

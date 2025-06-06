@@ -68,7 +68,7 @@ export default function HomePage() {
     // You can add a toast notification here if you want
   };
 
-  // Check if user has enough $Plio for premium features
+  // Check if user has enough $LUNESHARK for premium features
   const hasEnoughPlio = plioBalance !== null && plioBalance >= 50000;
 
   return (
@@ -178,8 +178,8 @@ export default function HomePage() {
           <div className="mb-8">
             <div className="w-24 h-24 flex items-center justify-center mx-auto mb-6">
               <img
-                src="/plio_logo.jpg"
-                alt="Plio Logo"
+                src="/luneshark_logo.png"
+                alt="Luneshark Logo"
                 className="w-full h-full object-cover rounded-3xl shadow-2xl shadow-blue-500/25"
               />
             </div>
@@ -192,7 +192,7 @@ export default function HomePage() {
                 className="bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm"
                 onClick={() =>
                   window.open(
-                    "https://x.com/PlioSol",
+                    "https://x.com/Luneshark",
                     "_blank",
                     "noopener,noreferrer"
                   )
@@ -210,7 +210,7 @@ export default function HomePage() {
                 className="bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm"
                 onClick={() =>
                   window.open(
-                    "https://telegram.org/PlioSol",
+                    "https://telegram.org/Luneshark",
                     "_blank",
                     "noopener,noreferrer"
                   )
@@ -282,7 +282,7 @@ export default function HomePage() {
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight">
               <span className="relative">
                 <span className="bg-gradient-to-r from-yellow-300 via-pink-300 to-purple-300 bg-clip-text text-transparent font-extrabold">
-                  $Plio
+                  $LUNESHARK
                 </span>
                 <span className="mx-3 bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
                   Holder
@@ -302,7 +302,7 @@ export default function HomePage() {
               className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold px-8 py-6 text-lg shadow-2xl shadow-pink-500/25 transition-all duration-300 hover:scale-105"
             >
               <Rocket className="w-6 h-6 mr-3" />
-              Launch Plio
+              Launch Luneshark
               <ExternalLink className="w-4 h-4 ml-2" />
             </Button>
 
@@ -335,7 +335,7 @@ export default function HomePage() {
                 <span className="font-semibold">Current Requirement:</span>
               </p>
               <Badge className="ml-2 mb-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold">
-                50,000 $Plio
+                50,000 $LUNESHARK
               </Badge>
 
               <p className="text-base text-white/80 leading-relaxed text-center">
