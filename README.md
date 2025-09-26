@@ -132,12 +132,12 @@ plio/
 - Project information and roadmap
 - Responsive design for all devices
 
-<!-- ### For $Luneshark Holders (50k+)
+### For $Luneshark Holders (50k+)
 
 - Advanced analytics dashboard
 - AI image generation
 - Premium support
-- Early access to new features -->
+- Early access to new features
 
 ## 📝 License
 

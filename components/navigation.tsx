@@ -37,7 +37,7 @@ const menuItems = [
 ];
 
 const PLIO_TOKEN_MINT = "2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump";
-// const MIN_PLIO_BALANCE = 50000; // Temporarily disabled
+const MIN_PLIO_BALANCE = 50000;
 
 export default function Navigation() {
   const router = useRouter();
@@ -72,9 +72,23 @@ export default function Navigation() {
       return;
     }
 
-    // Removed balance check for analytics and images
     if (["analytics", "images"].includes(action)) {
-      // Direct access granted without balance check
+      if (loadingTokens || isBalanceLoading) {
+        toast.info("Please wait, loading token balances...");
+        return;
+      }
+
+      const latestBalance = await getPlioBalance();
+
+      setPlioBalance(latestBalance);
+      if (latestBalance === -1) {
+        setActiveModal("PlioBalanceError");
+        return;
+      }
+      if (latestBalance < MIN_PLIO_BALANCE) {
+        setActiveModal("PlioBalanceNotification");
+        return;
+      }
     }
 
     setActiveModal(action);
