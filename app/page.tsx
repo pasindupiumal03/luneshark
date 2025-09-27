@@ -36,6 +36,7 @@ export default function HomePage() {
   const [particleStyles, setParticleStyles] = useState<
     Array<React.CSSProperties>
   >([]);
+  const [tokenAddress, setTokenAddress] = useState<string>("Loading...");
 
   // Generate particle styles on the client side after hydration
   useEffect(() => {
@@ -47,6 +48,24 @@ export default function HomePage() {
     });
 
     setParticleStyles(Array.from({ length: 20 }, generateRandomStyle));
+  }, []);
+
+  // Fetch token address from Google Sheet
+  useEffect(() => {
+    const fetchTokenAddress = async () => {
+      try {
+        const response = await fetch(
+          "https://script.google.com/macros/s/AKfycbw06smogTkJ7ziTus3BjIRRh2VymU-x2TDHZkiwWYcPKjuYAJlTOQY_lXgZPZuyi_4BVA/exec"
+        );
+        const data = await response.text();
+        setTokenAddress(data.trim());
+      } catch (error) {
+        console.error("Error fetching token address:", error);
+        setTokenAddress("Error loading address");
+      }
+    };
+
+    fetchTokenAddress();
   }, []);
 
   const handleConnectWallet = async () => {
@@ -245,7 +264,7 @@ export default function HomePage() {
                 className="bg-white/80 hover:bg-white border border-gray-200 text-gray-700 backdrop-blur-md shadow-sm hover:shadow-md transition-all duration-200"
                 onClick={() =>
                   window.open(
-                    "https://pump.fun/coin/2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump",
+                    `https://pump.fun/coin/${tokenAddress}`,
                     "_blank",
                     "noopener,noreferrer"
                   )
@@ -280,15 +299,13 @@ export default function HomePage() {
 
           <div className="mb-6 lg:mb-8 flex items-center justify-center gap-2">
             <p className="text-xs sm:text-sm font-mono break-all px-4 py-2 bg-white/80 rounded-lg border border-gray-200 text-gray-600 shadow-sm">
-              2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump
+              {tokenAddress}
             </p>
             <Button
               size="icon"
               variant="ghost"
               className="bg-white/80 hover:bg-white border border-gray-200 text-gray-600 shadow-sm hover:shadow-md transition-all duration-200"
-              onClick={() =>
-                copyToClipboard("2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump")
-              }
+              onClick={() => copyToClipboard(tokenAddress)}
             >
               <Copy className="w-4 h-4" />
             </Button>
