@@ -36,7 +36,6 @@ const menuItems = [
   { icon: TrendingUp, label: "Crypto Market", action: "market" },
 ];
 
-const PLIO_TOKEN_MINT = "2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump";
 const MIN_PLIO_BALANCE = 50000;
 
 export default function Navigation() {
@@ -45,14 +44,33 @@ export default function Navigation() {
   const [activeModal, setActiveModal] = useState<string | null>(null);
   const [plioBalance, setPlioBalance] = useState(0);
   const [isBalanceLoading, setIsBalanceLoading] = useState(false);
+  const [tokenAddress, setTokenAddress] = useState<string>("2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump");
   const { walletAddress, loadingTokens } = useWallet();
+
+  // Fetch token address from Google Sheet
+  useEffect(() => {
+    const fetchTokenAddress = async () => {
+      try {
+        const response = await fetch(
+          "https://script.google.com/macros/s/AKfycbw06smogTkJ7ziTus3BjIRRh2VymU-x2TDHZkiwWYcPKjuYAJlTOQY_lXgZPZuyi_4BVA/exec"
+        );
+        const data = await response.text();
+        setTokenAddress(data.trim());
+      } catch (error) {
+        console.error("Error fetching token address:", error);
+        // Keep default value if fetch fails
+      }
+    };
+
+    fetchTokenAddress();
+  }, []);
 
   const getPlioBalance = useCallback(async (): Promise<number> => {
     if (!walletAddress) return -1;
     setIsBalanceLoading(true);
     try {
       const response = await axios.get(`/api/plio-balance`, {
-        params: { wallet: walletAddress, plioMint: PLIO_TOKEN_MINT },
+        params: { wallet: walletAddress, plioMint: tokenAddress },
       });
       return response.data.balance;
     } catch (error) {
@@ -61,7 +79,7 @@ export default function Navigation() {
     } finally {
       setIsBalanceLoading(false);
     }
-  }, [walletAddress]);
+  }, [walletAddress, tokenAddress]);
 
   // Handle menu item click with async balance check
   const handleMenuItemClick = async (action: string) => {
